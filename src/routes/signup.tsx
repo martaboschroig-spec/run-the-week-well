@@ -23,7 +23,6 @@ export const Route = createFileRoute("/signup")({
 
 const PLANS = [
   { id: "family" as const, name: "Family Trial", price: "$1.95", per: "first 7 days, then $9.99 every 4 weeks", perks: ["2 adults + all your kids", "Swaps, alerts, notes and documents"] },
-  { id: "plus" as const, name: "Family Plus", price: "$149", per: "a year", perks: ["Everything in Family", "Extra caregivers, carpools, imports"] },
 ];
 
 function SignUpPage() {
@@ -39,8 +38,8 @@ function SignUpPage() {
           <span className="grid h-9 w-9 shrink-0 rotate-[-6deg] place-items-center rounded-xl bg-primary text-primary-foreground">R</span>
           RunTheWeek
         </div>
-        <h1 className="mt-6 text-3xl font-extrabold tracking-tight">Pick your plan</h1>
-        <p className="mt-1 text-sm text-muted-foreground">You can switch any time.</p>
+        <h1 className="mt-6 text-3xl font-extrabold tracking-tight">Your plan</h1>
+        <p className="mt-1 text-sm text-muted-foreground">One plan for the whole household. Cancel any time.</p>
         <div className="mt-5 grid gap-3" role="radiogroup" aria-label="Plan">
           {PLANS.map((p) => {
             const on = plan === p.id;
@@ -70,7 +69,7 @@ function SignUpPage() {
             );
           })}
         </div>
-        <Link to="/pricing" className="mt-3 inline-block text-sm font-semibold text-primary">Compare plans in detail</Link>
+        <Link to="/pricing" className="mt-3 inline-block text-sm font-semibold text-primary">See everything included</Link>
       </div>
 
       <div>

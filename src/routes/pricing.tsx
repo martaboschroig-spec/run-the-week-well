@@ -40,22 +40,6 @@ const PLANS = [
     cta: "Choose Family",
     highlight: true,
   },
-  {
-    id: "plus",
-    name: "Family Plus",
-    price: "$149",
-    per: "a year",
-    blurb: "For the household that runs a lot.",
-    features: [
-      "Everything in Family",
-      "Extra caregivers and carpools",
-      "Automations",
-      "Import your activities",
-      "Heavy use, no limits",
-    ],
-    cta: "Choose Family Plus",
-    highlight: false,
-  },
 ];
 
 function PricingPage() {
@@ -88,13 +72,13 @@ function PricingPage() {
         </p>
       </section>
 
-      <section className="grid gap-6 pb-14 mx-auto max-w-3xl md:grid-cols-2">
+      <section className="grid gap-6 pb-14 mx-auto max-w-md">
         {PLANS.map((p) => (
           <div
             key={p.id}
             className={
               p.highlight
-                ? "relative flex flex-col rounded-[2rem] border-4 border-primary bg-card p-7 shadow-soft lg:-translate-y-3"
+                ? "relative flex flex-col rounded-[2rem] border-4 border-primary bg-card p-7 shadow-soft "
                 : "flex flex-col rounded-[2rem] border-2 border-border bg-card p-7 shadow-soft"
             }
           >
