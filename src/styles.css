@@ -165,7 +165,7 @@
   animation: pop-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* Playful family palette — used by the pricing page */
+/* Playful family palette — applied to the whole web app via <html> */
 .theme-playful {
   --background: oklch(0.985 0.022 85);
   --foreground: oklch(0.29 0.035 275);
