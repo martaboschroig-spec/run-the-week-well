@@ -17,11 +17,6 @@ const GoogleMark = () => (
   </svg>
 );
 
-const providerStyle: Record<string, React.CSSProperties> = {
-  google: { backgroundColor: "#FFFFFF", border: "1px solid #747775", color: "#1F1F1F" },
-  apple: { backgroundColor: "#000000", border: "1px solid #000000", color: "#FFFFFF" },
-};
-
 export function OneTapAuth({ email = "", hint }: { email?: string; hint?: string }) {
   const [value, setValue] = useState(email);
   const [busy, setBusy] = useState<"google" | "apple" | "link" | null>(null);
@@ -68,7 +63,7 @@ export function OneTapAuth({ email = "", hint }: { email?: string; hint?: string
         disabled={busy !== null}
         onClick={() => social("google")}
         className="h-12 w-full justify-center gap-[10px] rounded-xl px-3 font-medium"
-        style={providerStyle.google}
+        style={{ backgroundColor: "#FFFFFF", border: "1px solid #747775", color: "#1F1F1F" }}
       >
         <GoogleMark />
         Continue with Google
@@ -80,7 +75,7 @@ export function OneTapAuth({ email = "", hint }: { email?: string; hint?: string
         disabled={busy !== null}
         onClick={() => social("apple")}
         className="h-12 w-full justify-center rounded-xl px-3 font-medium"
-        style={providerStyle.apple}
+        style={{ backgroundColor: "#000000", border: "1px solid #000000", color: "#FFFFFF" }}
       >
         Continue with Apple
       </Button>
