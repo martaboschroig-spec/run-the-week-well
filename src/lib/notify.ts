@@ -170,62 +170,70 @@ export async function alertForRequest(
   requestId: string,
   event: "request" | "accepted" | "declined" | "cancelled",
 ) {
-  const r = await loadRequest(ctx, requestId);
-  if (!r) return;
-  const mem = await namesOf(ctx, [r.from_member_id, r.to_member_id, r.requested_by_member_id]);
-  const from = mem(r.from_member_id);
-  const to = mem(r.to_member_id);
-  const by = mem(r.requested_by_member_id);
-  const when = `${whenText(r)} · ${time12(r.kind === "dropoff" ? r.start_time : r.end_time)}`;
-  const place = r.location ? ` (${r.location})` : "";
+  try {
+    const r = await loadRequest(ctx, requestId);
+    if (!r) return;
+    const mem = await namesOf(ctx, [r.from_member_id, r.to_member_id, r.requested_by_member_id]);
+    const from = mem(r.from_member_id);
+    const to = mem(r.to_member_id);
+    const by = mem(r.requested_by_member_id);
+    const when = `${whenText(r)} · ${time12(r.kind === "dropoff" ? r.start_time : r.end_time)}`;
+    const place = r.location ? ` (${r.location})` : "";
 
-  let alert: Alert;
-  let recipient: string;
+    let alert: Alert;
+    let recipient: string;
 
-  if (event === "request") {
-    recipient = r.to_member_id;
-    alert = {
-      title: `New request from ${from}`,
-      body: `Can you ${verb(r.kind)} ${r.child} ${r.kind === "dropoff" ? "at" : "from"} ${r.activity}${place}? ${when}${
-        r.message ? ` — they said: "${r.message}"` : ""
-      }`,
-      path: "/notifications",
-    };
-  } else if (event === "accepted") {
-    recipient = r.requested_by_member_id;
-    alert = { title: "Swap confirmed", body: `${to} will ${verb(r.kind)} ${r.child} — ${r.activity}, ${when}.`, path: "/schedule" };
-  } else if (event === "declined") {
-    recipient = r.requested_by_member_id;
-    alert = {
-      title: `${to} can't do it`,
-      body: `${to} can't ${verb(r.kind)} ${r.child}. ${from} is still responsible — ${r.activity}, ${when}.`,
-      path: "/notifications",
-    };
-  } else {
-    recipient = r.to_member_id;
-    alert = {
-      title: "Request cancelled",
-      body: `${by} cancelled the request about ${r.child}'s ${slotOf(r.kind)} — ${r.activity}, ${when}.`,
-      path: "/schedule",
-    };
+    if (event === "request") {
+      recipient = r.to_member_id;
+      alert = {
+        title: `New request from ${from}`,
+        body: `Can you ${verb(r.kind)} ${r.child} ${r.kind === "dropoff" ? "at" : "from"} ${r.activity}${place}? ${when}${
+          r.message ? ` — they said: "${r.message}"` : ""
+        }`,
+        path: "/notifications",
+      };
+    } else if (event === "accepted") {
+      recipient = r.requested_by_member_id;
+      alert = { title: "Swap confirmed", body: `${to} will ${verb(r.kind)} ${r.child} — ${r.activity}, ${when}.`, path: "/schedule" };
+    } else if (event === "declined") {
+      recipient = r.requested_by_member_id;
+      alert = {
+        title: `${to} can't do it`,
+        body: `${to} can't ${verb(r.kind)} ${r.child}. ${from} is still responsible — ${r.activity}, ${when}.`,
+        path: "/notifications",
+      };
+    } else {
+      recipient = r.to_member_id;
+      alert = {
+        title: "Request cancelled",
+        body: `${by} cancelled the request about ${r.child}'s ${slotOf(r.kind)} — ${r.activity}, ${when}.`,
+        path: "/schedule",
+      };
+    }
+
+    await deliver(ctx, recipient, alert);
+  } catch (e) {
+    console.error("[notify] request alert failed", e);
   }
-
-  await deliver(ctx, recipient, alert);
 }
 
 export async function alertForNote(ctx: Ctx, noteId: string) {
-  const n = await ctx.supabase
-    .from("activity_notes")
-    .select("id,body,author_member_id,notify_member_id,activity_id, activities(name, children(name))")
-    .eq("id", noteId)
-    .maybeSingle();
-  const row = n.data as any;
-  if (!row?.notify_member_id) return;
-  const mem = await namesOf(ctx, [row.author_member_id]);
-  const a = row.activities ?? {};
-  await deliver(ctx, row.notify_member_id, {
-    title: `${mem(row.author_member_id)} wants you to know`,
-    body: `${a.children?.name ?? "Your child"} — ${a.name ?? "the activity"}: ${String(row.body).slice(0, 300)}`,
-    path: `/activities/${row.activity_id}`,
-  });
+  try {
+    const n = await ctx.supabase
+      .from("activity_notes")
+      .select("id,body,author_member_id,notify_member_id,activity_id, activities(name, children(name))")
+      .eq("id", noteId)
+      .maybeSingle();
+    const row = n.data as any;
+    if (!row?.notify_member_id) return;
+    const mem = await namesOf(ctx, [row.author_member_id]);
+    const a = row.activities ?? {};
+    await deliver(ctx, row.notify_member_id, {
+      title: `${mem(row.author_member_id)} wants you to know`,
+      body: `${a.children?.name ?? "Your child"} — ${a.name ?? "the activity"}: ${String(row.body).slice(0, 300)}`,
+      path: `/activities/${row.activity_id}`,
+    });
+  } catch (e) {
+    console.error("[notify] note alert failed", e);
+  }
 }
