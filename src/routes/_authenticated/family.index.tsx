@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ChevronRight, Pencil, Plus } from "lucide-react";
+import { ChevronRight, Copy, Pencil, Plus } from "lucide-react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,6 +89,20 @@ function MemberSheet({ m, isMe, onClose }: { m: Partial<Member>; isMe: boolean; 
           </div>
           <Input className="h-12 rounded-xl text-base" type="email" placeholder="Email (so they can sign in)" value={f.email} disabled={isMe} onChange={(e) => setF({ ...f, email: e.target.value })} />
           <p className="text-sm text-muted-foreground">When they create an account with this email, they'll see their tasks and requests.</p>
+          {m.id && !isMe && !m.user_id && f.email.trim() && (
+            <button
+              type="button"
+              className="flex w-full items-center justify-between gap-3 rounded-2xl border bg-secondary/50 px-4 py-3 text-left text-sm font-semibold hover:bg-secondary"
+              onClick={async () => {
+                const link = `${window.location.origin}/signup?email=${encodeURIComponent(f.email.trim())}`;
+                try { await navigator.clipboard.writeText(link); toast.success("Join link copied — send it to them"); }
+                catch { toast.error(link); }
+              }}
+            >
+              <span>Copy join link for {f.name || "them"}</span>
+              <Copy className="h-4 w-4 text-muted-foreground" />
+            </button>
+          )}
           <Button size="lg" className="w-full" onClick={async () => {
             try { await save({ data: { id: m.id, name: f.name, role_label: f.role_label, email: f.email.trim() || null } }); await refresh(); onClose(); } catch (e) { toast.error(errMsg(e)); }
           }}>Save</Button>
