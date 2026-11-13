@@ -186,3 +186,56 @@ export const markNotificationsRead = createServerFn({ method: "POST" }).middlewa
     ok(await (context as Ctx).supabase.from("notifications").update({ read_at: new Date().toISOString() }).eq("recipient_member_id", me.member.id).is("read_at", null).neq("type", "request"));
     return true;
   });
+
+// ----- Notes, documents and heads-ups on an activity -----
+export const getActivityExtras = createServerFn({ method: "GET" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => idInput.parse(d))
+  .handler(async ({ data, context }) => {
+    const sb = (context as Ctx).supabase;
+    const [notes, files] = await Promise.all([
+      sb.from("activity_notes").select("*").eq("activity_id", data.id).order("created_at", { ascending: false }),
+      sb.from("activity_files").select("*").eq("activity_id", data.id).order("created_at", { ascending: false }),
+    ]);
+    return { notes: ok(notes) as any[], files: ok(files) as any[] };
+  });
+export const addNote = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { activityId: string; body: string; notifyMemberId: string | null }) => z.object({ activityId: z.string().uuid(), body: z.string().trim().min(1).max(2000), notifyMemberId: z.string().uuid().nullable() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const me = await requireMe(context as Ctx);
+    if (data.notifyMemberId === me.member.id) data.notifyMemberId = null;
+    ok(await (context as Ctx).supabase.from("activity_notes").insert({ activity_id: data.activityId, author_member_id: me.member.id, body: data.body, notify_member_id: data.notifyMemberId }));
+    return true;
+  });
+export const deleteNote = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => idInput.parse(d))
+  .handler(async ({ data, context }) => { ok(await (context as Ctx).supabase.from("activity_notes").delete().eq("id", data.id)); return true; });
+export const recordFile = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { activityId: string; name: string; path: string; size: number }) => z.object({ activityId: z.string().uuid(), name: z.string().min(1).max(200), path: z.string().min(1).max(400), size: z.number().int().min(0) }).parse(d))
+  .handler(async ({ data, context }) => {
+    const me = await requireMe(context as Ctx);
+    if (!data.path.startsWith(`${me.household.id}/${data.activityId}/`)) throw new Error("Invalid file path");
+    ok(await (context as Ctx).supabase.from("activity_files").insert({ activity_id: data.activityId, uploaded_by_member_id: me.member.id, name: data.name, path: data.path, size: data.size }));
+    return true;
+  });
+export const deleteFile = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => idInput.parse(d))
+  .handler(async ({ data, context }) => {
+    const sb = (context as Ctx).supabase;
+    const f = ok(await sb.from("activity_files").select("path").eq("id", data.id).single()) as any;
+    await sb.storage.from("activity-docs").remove([f.path]);
+    ok(await sb.from("activity_files").delete().eq("id", data.id));
+    return true;
+  });
+/** Notes where someone asked to let me know. */
+export const getMessages = createServerFn({ method: "GET" }).middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const me = await meOf(context as Ctx);
+    if (!me) return [];
+    return ok(await (context as Ctx).supabase.from("activity_notes").select("*").eq("notify_member_id", me.member.id).order("created_at", { ascending: false }).limit(50)) as any[];
+  });
+export const markMessagesRead = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const me = await requireMe(context as Ctx);
+    ok(await (context as Ctx).supabase.from("activity_notes").update({ read_at: new Date().toISOString() }).eq("notify_member_id", me.member.id).is("read_at", null));
+    return true;
+  });
