@@ -54,7 +54,7 @@ export function NotesPanel({ data, activityId }: { data: Data; activityId: strin
 
   const open = async (path: string) => {
     const { data: s, error } = await supabase.storage.from("activity-docs").createSignedUrl(path, 300);
-    if (error || !s) return toast.error("Couldn't open this file");
+    if (error || !s) { toast.error("Couldn't open this file"); return; }
     window.open(s.signedUrl, "_blank", "noopener");
   };
 
