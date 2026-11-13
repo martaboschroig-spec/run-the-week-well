@@ -277,6 +277,10 @@ export type Database = {
           household_id: string
           id: string
           name: string
+          notify_email: boolean
+          notify_push: boolean
+          notify_sms: boolean
+          phone: string | null
           role_label: string
           user_id: string | null
         }
@@ -286,6 +290,10 @@ export type Database = {
           household_id: string
           id?: string
           name: string
+          notify_email?: boolean
+          notify_push?: boolean
+          notify_sms?: boolean
+          phone?: string | null
           role_label?: string
           user_id?: string | null
         }
@@ -295,6 +303,10 @@ export type Database = {
           household_id?: string
           id?: string
           name?: string
+          notify_email?: boolean
+          notify_push?: boolean
+          notify_sms?: boolean
+          phone?: string | null
           role_label?: string
           user_id?: string | null
         }
@@ -367,6 +379,51 @@ export type Database = {
             columns: ["request_id"]
             isOneToOne: false
             referencedRelation: "reassignment_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      push_tokens: {
+        Row: {
+          created_at: string
+          household_id: string
+          id: string
+          last_seen_at: string
+          member_id: string
+          platform: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          household_id: string
+          id?: string
+          last_seen_at?: string
+          member_id: string
+          platform?: string
+          token: string
+        }
+        Update: {
+          created_at?: string
+          household_id?: string
+          id?: string
+          last_seen_at?: string
+          member_id?: string
+          platform?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_tokens_household_id_fkey"
+            columns: ["household_id"]
+            isOneToOne: false
+            referencedRelation: "households"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "push_tokens_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
             referencedColumns: ["id"]
           },
         ]
