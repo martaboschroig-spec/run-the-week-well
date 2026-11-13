@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { buildOverview, type HouseholdData, type Activity, type Assignment, type ChangeRequest } from "@/lib/domain/logic";
+import { alertForRequest, alertForNote } from "@/lib/notify";
 
 type Ctx = { supabase: any; userId: string };
 const ok = <T,>(r: { data: T; error: { message: string } | null }): T => { if (r.error) throw new Error(r.error.message); return r.data; };
@@ -157,13 +158,28 @@ export const renameHousehold = createServerFn({ method: "POST" }).middleware([re
 // ----- Change requests (rules enforced in database functions) -----
 export const requestChange = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
   .inputValidator((d: { assignmentId: string; toMemberId: string; message?: string }) => z.object({ assignmentId: z.string().uuid(), toMemberId: z.string().uuid(), message: z.string().max(300).optional() }).parse(d))
-  .handler(async ({ data, context }) => { ok(await (context as Ctx).supabase.rpc("request_change", { _assignment: data.assignmentId, _to: data.toMemberId, _message: data.message ?? null })); return true; });
+  .handler(async ({ data, context }) => {
+    const ctx = context as Ctx;
+    const requestId = ok(await ctx.supabase.rpc("request_change", { _assignment: data.assignmentId, _to: data.toMemberId, _message: data.message ?? null })) as string;
+    await alertForRequest(ctx, requestId, "request");
+    return true;
+  });
 export const respondChange = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
   .inputValidator((d: { requestId: string; accept: boolean }) => z.object({ requestId: z.string().uuid(), accept: z.boolean() }).parse(d))
-  .handler(async ({ data, context }) => { ok(await (context as Ctx).supabase.rpc("respond_change", { _request: data.requestId, _accept: data.accept })); return true; });
+  .handler(async ({ data, context }) => {
+    const ctx = context as Ctx;
+    ok(await ctx.supabase.rpc("respond_change", { _request: data.requestId, _accept: data.accept }));
+    await alertForRequest(ctx, data.requestId, data.accept ? "accepted" : "declined");
+    return true;
+  });
 export const cancelChange = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
   .inputValidator((d: { requestId: string }) => z.object({ requestId: z.string().uuid() }).parse(d))
-  .handler(async ({ data, context }) => { ok(await (context as Ctx).supabase.rpc("cancel_change", { _request: data.requestId })); return true; });
+  .handler(async ({ data, context }) => {
+    const ctx = context as Ctx;
+    ok(await ctx.supabase.rpc("cancel_change", { _request: data.requestId }));
+    await alertForRequest(ctx, data.requestId, "cancelled");
+    return true;
+  });
 export const acknowledgeDecline = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
   .inputValidator((d: { requestId: string }) => z.object({ requestId: z.string().uuid() }).parse(d))
   .handler(async ({ data, context }) => { ok(await (context as Ctx).supabase.rpc("acknowledge_decline", { _request: data.requestId })); return true; });
@@ -203,7 +219,9 @@ export const addNote = createServerFn({ method: "POST" }).middleware([requireSup
   .handler(async ({ data, context }) => {
     const me = await requireMe(context as Ctx);
     if (data.notifyMemberId === me.member.id) data.notifyMemberId = null;
-    ok(await (context as Ctx).supabase.from("activity_notes").insert({ activity_id: data.activityId, author_member_id: me.member.id, body: data.body, notify_member_id: data.notifyMemberId }));
+    const ctx = context as Ctx;
+    const row = ok(await ctx.supabase.from("activity_notes").insert({ activity_id: data.activityId, author_member_id: me.member.id, body: data.body, notify_member_id: data.notifyMemberId }).select("id").single()) as any;
+    if (data.notifyMemberId) await alertForNote(ctx, row.id as string);
     return true;
   });
 export const deleteNote = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
