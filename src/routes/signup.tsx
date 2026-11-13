@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Check } from "lucide-react";
 import { OneTapAuth } from "@/components/app/OneTapAuth";
+import { PhoneMock } from "@/components/app/PhoneMock";
 
 export const Route = createFileRoute("/signup")({
   validateSearch: (search: Record<string, unknown>): { email?: string | undefined; plan?: "family" | "plus" | undefined } => ({
