@@ -34,7 +34,7 @@ function SignUpPage() {
   }, [plan]);
   return (
     <div className="mx-auto grid min-h-screen max-w-4xl items-center gap-8 px-6 py-10 md:grid-cols-2">
-      <div>
+      <div className="md:order-2">
         <div className="flex items-center gap-2 text-lg font-extrabold">
           <span className="grid h-9 w-9 shrink-0 rotate-[-6deg] place-items-center rounded-xl bg-primary text-primary-foreground">R</span>
           RunTheWeek
