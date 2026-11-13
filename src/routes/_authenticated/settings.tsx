@@ -92,7 +92,7 @@ function Settings() {
         setNotice("Alerts are on for this device.");
         toast.success("Phone alerts are on");
       } else {
-        setNotice(NOTICE[r.status]);
+        setNotice(NOTICE[r.status] ?? "We couldn't turn alerts on.");
       }
     } catch (e) {
       toast.error(errMsg(e));
