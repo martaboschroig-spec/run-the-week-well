@@ -32,7 +32,7 @@ function AuthPage() {
           {email ? "Use the email your family added for you." : "Pick a way in — it takes a second."}
         </p>
         <div className="mt-6">
-          <OneTapAuth email={email ?? ""} />
+          <OneTapAuth emailOnly email={email ?? ""} />
         </div>
       </div>
       <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
