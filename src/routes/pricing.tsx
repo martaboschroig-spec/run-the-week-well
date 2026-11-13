@@ -114,7 +114,7 @@ function PricingPage() {
             }
           >
             {p.highlight && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 -rotate-2 rounded-full bg-sun px-4 py-1 text-xs font-extrabold text-foreground ">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 -rotate-2 whitespace-nowrap rounded-full bg-sun px-4 py-1 text-xs font-extrabold text-foreground ">
                 Most families pick this
               </span>
             )}
