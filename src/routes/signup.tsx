@@ -2,7 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Check, Lock, CreditCard, ShieldCheck, RotateCcw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { MagicLinkAuth } from "@/components/app/MagicLinkAuth";
+import { SignupModal } from "@/components/app/SignupModal";
+import { Button } from "@/components/ui/button";
 import { PhoneMock } from "@/components/app/PhoneMock";
 
 export const Route = createFileRoute("/signup")({
@@ -34,16 +35,18 @@ function SignUpPage() {
   useEffect(() => {
     localStorage.setItem("rtw-chosen-plan", plan);
   }, [plan]);
-  const [step, setStep] = useState<1 | 2>(stepParam === 2 ? 2 : 1);
+  const [signedIn, setSignedIn] = useState(stepParam === 2);
+  const [modal, setModal] = useState(false);
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => { if (data.session) setStep(2); });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) setStep(2); });
+    supabase.auth.getSession().then(({ data }) => { if (data.session) setSignedIn(true); else if (stepParam !== 2) setModal(true); });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) { setSignedIn(true); setModal(false); } });
     return () => sub.subscription.unsubscribe();
   }, []);
   void navigate;
   const included = ["Shared family schedule", "Swaps that never get lost", "Notes & documents", "Alerts by email, push or text"];
   return (
     <div className="min-h-screen">
+      <SignupModal open={modal} onOpenChange={setModal} email={email} returnTo="/signup" />
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2 text-lg font-extrabold">
           <span className="grid h-9 w-9 shrink-0 rotate-[-6deg] place-items-center rounded-xl bg-primary text-primary-foreground">R</span>
@@ -58,28 +61,6 @@ function SignUpPage() {
       <h1 className="mt-10 px-6 text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Start your family's week</h1>
       <div className="mx-auto mt-8 grid max-w-6xl gap-10 px-6 pb-12 md:grid-cols-2 md:gap-0">
         <div className="md:border-r md:pr-12">
-        <ol className="mb-4 flex items-center gap-2 text-xs font-bold" aria-label="Steps">
-          <li className={"flex items-center gap-1.5 " + (step === 1 ? "text-primary" : "text-muted-foreground")}>
-            <span className={"grid h-6 w-6 place-items-center rounded-full " + (step === 1 ? "bg-primary text-primary-foreground" : "bg-covered-soft text-covered")}>{step === 2 ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : "1"}</span>
-            Your account
-          </li>
-          <span className="h-px flex-1 bg-border" />
-          <li className={"flex items-center gap-1.5 " + (step === 2 ? "text-primary" : "text-muted-foreground")}>
-            <span className={"grid h-6 w-6 place-items-center rounded-full " + (step === 2 ? "bg-primary text-primary-foreground" : "bg-muted")}>2</span>
-            Payment
-          </li>
-        </ol>
-        {step === 1 ? (
-          <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
-            <h2 className="text-2xl font-extrabold tracking-tight">Create your account</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {email ? "Use the email your family added for you." : "Next, you'll add a card to start your 7-day trial."}
-            </p>
-            <div className="mt-6">
-              <MagicLinkAuth email={email ?? ""} returnTo="/signup" />
-            </div>
-          </div>
-        ) : (
           <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
             <h2 className="text-2xl font-extrabold tracking-tight">Start your trial</h2>
             <div className="mt-4 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
@@ -103,9 +84,12 @@ function SignUpPage() {
               You pay $1.95 today for 7 days of full access. Then your plan renews at $9.99 every 4 weeks until you cancel.
             </p>
             <p className="mt-3 rounded-2xl bg-sun-soft p-3 text-center text-xs font-semibold">Card payments open soon — nothing is charged yet.</p>
-            <Link to="/schedule" className="mt-3 block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
+            {signedIn ? (
+              <Link to="/schedule" className="mt-3 block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
+            ) : (
+              <Button className="mt-3 w-full" variant="outline" onClick={() => setModal(true)}>Create your account first</Button>
+            )}
           </div>
-        )}
         </div>
         <div className="md:pl-12">
           <div className="flex items-center gap-4 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
