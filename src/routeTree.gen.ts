@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedScheduleRouteImport } from './routes/_authenticated/schedule'
@@ -42,11 +41,6 @@ const AuthRoute = AuthRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupRoute = SignupRouteImport.update({
@@ -110,7 +104,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/pricing': typeof PricingRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/schedule': typeof AuthenticatedScheduleRoute
@@ -126,7 +119,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/pricing': typeof PricingRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/schedule': typeof AuthenticatedScheduleRoute
@@ -144,7 +136,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/pricing': typeof PricingRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/schedule': typeof AuthenticatedScheduleRoute
@@ -162,7 +153,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/pricing'
-    | '/reset-password'
     | '/signup'
     | '/notifications'
     | '/schedule'
@@ -178,7 +168,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/pricing'
-    | '/reset-password'
     | '/signup'
     | '/notifications'
     | '/schedule'
@@ -195,7 +184,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/pricing'
-    | '/reset-password'
     | '/signup'
     | '/_authenticated/notifications'
     | '/_authenticated/schedule'
@@ -213,7 +201,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   PricingRoute: typeof PricingRoute
-  ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
 }
 
@@ -245,13 +232,6 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -359,7 +339,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   PricingRoute: PricingRoute,
-  ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
