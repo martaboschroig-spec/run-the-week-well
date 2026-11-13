@@ -71,7 +71,7 @@ function LandingPage() {
     <div className="mx-auto max-w-5xl px-6">
       {/* Nav */}
       <header className="flex items-center gap-2 py-6">
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
         <span className="text-lg font-extrabold">RunTheWeek</span>
         <nav className="ml-auto flex items-center gap-2">
           {signedIn ? (

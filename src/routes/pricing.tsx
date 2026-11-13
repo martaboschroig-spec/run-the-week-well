@@ -78,7 +78,7 @@ function PricingPage() {
   return (
     <div className="mx-auto max-w-5xl px-6">
       <header className="flex items-center gap-2 py-6">
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
         <span className="text-lg font-extrabold">RunTheWeek</span>
         <nav className="ml-auto flex items-center gap-2">
           {signedIn ? (
@@ -99,14 +99,14 @@ function PricingPage() {
         </p>
       </section>
 
-      <section className="grid items-start gap-6 pb-14 lg:grid-cols-3">
+      <section className="grid gap-6 pb-14 lg:grid-cols-3">
         {PLANS.map((p) => (
           <div
             key={p.id}
             className={
               p.highlight
-                ? "relative rounded-3xl border-2 border-primary bg-card p-6 shadow-soft"
-                : "rounded-3xl border bg-card p-6 shadow-soft"
+                ? "relative flex flex-col rounded-3xl border-2 border-primary bg-card p-6 shadow-soft"
+                : "flex flex-col rounded-3xl border bg-card p-6 shadow-soft"
             }
           >
             {p.highlight && (
@@ -118,7 +118,7 @@ function PricingPage() {
             <p className="mt-3 text-4xl font-extrabold tracking-tight">{p.price}</p>
             <p className="text-sm text-muted-foreground">{p.per}</p>
             <p className="mt-3 text-sm font-medium">{p.blurb}</p>
-            <ul className="mt-5 grid gap-2 text-sm">
+            <ul className="mt-5 grid flex-1 content-start gap-2 text-sm">
               {p.features.map((f) => (
                 <li key={f} className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-covered" />
