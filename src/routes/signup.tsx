@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, Lock, CreditCard, ShieldCheck, RotateCcw } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { OneTapAuth } from "@/components/app/OneTapAuth";
 import { PhoneMock } from "@/components/app/PhoneMock";
 
@@ -32,46 +33,106 @@ function SignUpPage() {
   useEffect(() => {
     localStorage.setItem("rtw-chosen-plan", plan);
   }, [plan]);
+  const [step, setStep] = useState<1 | 2>(1);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => { if (data.session) setStep(2); });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) setStep(2); });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+  void navigate;
+  const included = ["Shared family schedule", "Swaps that never get lost", "Notes & documents", "Alerts by email, push or text"];
   return (
-    <div className="mx-auto grid min-h-screen max-w-4xl items-center gap-8 px-6 py-10 md:grid-cols-2">
-      <div className="md:order-2">
-        <div className="flex items-center gap-2 text-lg font-extrabold">
+    <div className="min-h-screen">
+      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <Link to="/" className="flex items-center gap-2 text-lg font-extrabold">
           <span className="grid h-9 w-9 shrink-0 rotate-[-6deg] place-items-center rounded-xl bg-primary text-primary-foreground">R</span>
           RunTheWeek
-        </div>
-        <h1 className="mt-6 text-3xl font-extrabold tracking-tight">Your plan</h1>
-        <p className="mt-1 text-sm text-muted-foreground">One plan for the whole household. Cancel any time.</p>
-        <div className="mt-5 grid gap-3" role="radiogroup" aria-label="Plan">
-          {PLANS.map((p) => {
-            const on = plan === p.id;
-            return (
-              <button
-                key={p.id}
-                type="button"
-                role="radio"
-                aria-checked={on}
-                onClick={() => navigate({ search: (s) => ({ ...s, plan: p.id }), replace: true })}
-                className={"rounded-3xl border-2 bg-card p-5 text-left shadow-soft transition " + (on ? "border-primary" : "border-border hover:border-primary/50")}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{p.name}</p>
-                    <p className="mt-1 text-3xl font-extrabold tracking-tight">{p.price}</p>
-                    <p className="text-sm text-muted-foreground">{p.per}</p>
-                  </div>
-                  <span className={"grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 " + (on ? "border-primary bg-primary text-primary-foreground" : "border-border")}>
-                    {on && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
-                  </span>
-                </div>
-                <ul className="mt-3 grid gap-1 text-sm">
-                  {p.perks.map((x) => <li key={x}>· {x}</li>)}
-                </ul>
+        </Link>
+        <Link to="/auth" className="text-sm font-semibold text-primary">I already have an account</Link>
+      </header>
+      <div className="bg-accent py-2.5 text-center text-sm font-semibold">
+        <ShieldCheck className="mr-1.5 inline h-4 w-4 text-secondary" />
+        Your family's data stays private — only your household can see it
+      </div>
+      <h1 className="mt-10 px-6 text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Start your family's week</h1>
+      <div className="mx-auto mt-8 grid max-w-6xl gap-10 px-6 pb-12 md:grid-cols-2 md:gap-0">
+        <div className="md:border-r md:pr-12">
+        <ol className="mb-4 flex items-center gap-2 text-xs font-bold" aria-label="Steps">
+          <li className={"flex items-center gap-1.5 " + (step === 1 ? "text-primary" : "text-muted-foreground")}>
+            <span className={"grid h-6 w-6 place-items-center rounded-full " + (step === 1 ? "bg-primary text-primary-foreground" : "bg-covered-soft text-covered")}>{step === 2 ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : "1"}</span>
+            Your account
+          </li>
+          <span className="h-px flex-1 bg-border" />
+          <li className={"flex items-center gap-1.5 " + (step === 2 ? "text-primary" : "text-muted-foreground")}>
+            <span className={"grid h-6 w-6 place-items-center rounded-full " + (step === 2 ? "bg-primary text-primary-foreground" : "bg-muted")}>2</span>
+            Payment
+          </li>
+        </ol>
+        {step === 1 ? (
+          <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
+            <h2 className="text-2xl font-extrabold tracking-tight">Create your account</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {email ? "Use the email your family added for you." : "Next, you'll add a card to start your 7-day trial."}
+            </p>
+            <div className="mt-6">
+              <OneTapAuth email={email ?? ""} returnTo="/signup" onDone={() => setStep(2)} />
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
+            <h2 className="text-2xl font-extrabold tracking-tight">Start your trial</h2>
+            <div className="mt-4 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+              <Lock className="h-3.5 w-3.5" /> Secure payment <span className="h-px flex-1 bg-border" />
+            </div>
+            <div className="mt-3 grid gap-2.5">
+              <button type="button" disabled className="h-12 rounded-xl bg-foreground text-base font-bold text-background">Apple Pay</button>
+              <button type="button" disabled className="h-12 rounded-xl bg-foreground text-base font-bold text-background">Google Pay</button>
+              <button type="button" disabled className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary text-base font-bold text-primary-foreground">
+                <CreditCard className="h-4 w-4" /> Credit or debit card
               </button>
-            );
-          })}
+            </div>
+            <div className="mt-4 flex justify-center gap-2 text-[10px] font-extrabold">
+              {["VISA", "MASTERCARD", "AMEX"].map((c) => <span key={c} className="rounded-md border-2 border-border px-2 py-1">{c}</span>)}
+            </div>
+            <div className="mt-5 flex items-baseline justify-between border-t pt-4">
+              <span className="font-bold">Due today</span>
+              <span className="text-3xl font-extrabold tracking-tight">$1.95</span>
+            </div>
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              You pay $1.95 today for 7 days of full access. Then your plan renews at $9.99 every 4 weeks until you cancel.
+            </p>
+            <p className="mt-3 rounded-2xl bg-sun-soft p-3 text-center text-xs font-semibold">Card payments open soon — nothing is charged yet.</p>
+            <Link to="/schedule" className="mt-3 block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
+          </div>
+        )}
         </div>
-        <div className="mt-4 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
-          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">What you get — a peek at Friday</p>
+        <div className="md:pl-12">
+          <div className="flex items-center gap-4 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
+            <span className="grid h-16 w-16 shrink-0 rotate-[-6deg] place-items-center rounded-2xl bg-primary text-2xl font-extrabold text-primary-foreground">R</span>
+            <div>
+              <span className="inline-flex items-center gap-1 rounded-full bg-covered-soft px-2 py-0.5 text-[11px] font-bold uppercase text-covered"><Check className="h-3 w-3" strokeWidth={3} /> 7-day trial</span>
+              <p className="mt-1 text-lg font-extrabold">Family Trial</p>
+              <p className="text-sm text-muted-foreground">2 adults + all your kids · Cancel any time</p>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-3 text-sm">
+            <div className="flex justify-between"><span>Every 4 weeks</span><span>$9.99</span></div>
+            <div className="flex justify-between text-covered"><span>Trial price <span className="ml-1 rounded-full bg-covered-soft px-2 py-0.5 text-[11px] font-bold">First 7 days</span></span><span>−$8.04</span></div>
+          </div>
+          <div className="mt-4 flex items-baseline justify-between border-t pt-4">
+            <span className="text-xl font-extrabold">Due today</span>
+            <span><span className="mr-2 text-muted-foreground line-through">$9.99</span><span className="text-4xl font-extrabold tracking-tight">$1.95</span></span>
+          </div>
+          <div className="mt-6 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
+            <p className="text-xs font-bold uppercase tracking-wide text-secondary">Included in your trial</p>
+            <ul className="mt-3 grid gap-3 text-sm font-semibold sm:grid-cols-2">
+              {included.map((x) => (
+                <li key={x} className="flex items-start gap-2"><span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground"><Check className="h-3 w-3" strokeWidth={3} /></span>{x}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="mt-6 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
+            <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">What you get — a peek at Friday</p>
           <PhoneMock className="mt-4 -rotate-1">
             <div className="flex h-[470px] flex-col">
               <div className="flex items-center justify-between pb-2 pt-1">
@@ -121,25 +182,21 @@ function SignUpPage() {
               </div>
             </div>
           </PhoneMock>
-          <p className="mt-3 text-xs text-muted-foreground">Plus gear checklists, notes and documents, and alerts by email, push or text.</p>
-        </div>
-        <Link to="/pricing" className="mt-3 inline-block text-sm font-semibold text-primary">See everything included</Link>
-      </div>
-
-      <div>
-        <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
-          <h2 className="text-2xl font-extrabold tracking-tight">Create your account</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {email ? "Use the email your family added for you." : "You'll set up your family in the next step."}
-          </p>
-          <div className="mt-6">
-            <OneTapAuth email={email ?? ""} />
+          </div>
+          <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-1 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1"><Lock className="h-3.5 w-3.5" /> Secure checkout</span>
+            <span className="flex items-center gap-1"><CreditCard className="h-3.5 w-3.5" /> Cards & wallets</span>
+            <span className="flex items-center gap-1"><RotateCcw className="h-3.5 w-3.5" /> Cancel any time</span>
           </div>
         </div>
-        <p className="mt-4 text-center text-sm">
-          <Link to="/auth" className="font-semibold text-primary">I already have an account</Link>
-        </p>
-        <p className="mt-2 text-center text-xs text-muted-foreground">Billing opens soon — nothing is charged today.</p>
+      </div>
+      <div className="mx-auto mb-12 flex w-fit items-center gap-3 rounded-full border-2 border-border bg-card px-5 py-2.5 shadow-soft">
+        <div className="flex -space-x-2">
+          {["bg-kid-coral text-kid-coral-ink", "bg-kid-blue text-kid-blue-ink", "bg-kid-sage text-kid-sage-ink"].map((c, i) => (
+            <span key={c} className={"grid h-8 w-8 place-items-center rounded-full border-2 border-card text-xs font-extrabold " + c}>{"MJA"[i]}</span>
+          ))}
+        </div>
+        <p className="text-sm"><span className="font-bold">Families</span> plan their week here every day</p>
       </div>
     </div>
   );
