@@ -15,6 +15,13 @@
       "when": 1794593288676,
       "tag": "0001_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794595165738,
+      "tag": "0002_activity_notes_files",
+      "breakpoints": true
     }
   ]
 }
