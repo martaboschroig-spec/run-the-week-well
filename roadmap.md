@@ -13,3 +13,4 @@
 - [ ] Phone alerts (push): needs the alerts service (Firebase) connected
 - [ ] Text alerts (SMS/WhatsApp): needs Twilio connected + a sending number
 - [ ] No email verification on sign-up: confirm emails off, signup goes straight into the app
+- [ ] Passwordless access: magic link by email + Sign in with Google and Apple
