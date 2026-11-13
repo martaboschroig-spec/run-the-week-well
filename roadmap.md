@@ -7,3 +7,4 @@
 - [ ] Marketing landing at / to acquire users (hero, features, how it works, CTA → /signup)
 - [ ] Signup page works for new families too (account → onboarding creates household)
 - [ ] Subscriptions/payments (Stripe or Paddle) — pending, needs user's decision
+- [ ] Show the user the app part (Schedule, My Tasks, Family, Notifications) after the landing is done
