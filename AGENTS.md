@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Architecture
+- Pure schedule rules (recurrence expansion, conflicts, needs-attention, tasks) live in `src/lib/domain/logic.ts` with tests; server functions in `src/lib/api.functions.ts` run them so React only renders.
+- Reassignment state changes (request/accept/decline/cancel/acknowledge) happen only in SECURITY DEFINER Postgres functions, so requesting never moves a responsibility.
+- Data access is scoped by household membership (`is_household_member`); a signed-in user is linked to a family member by matching email (`link_me`).
