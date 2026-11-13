@@ -78,6 +78,7 @@ function LandingPage() {
             <Button asChild><Link to="/schedule">Open my week</Link></Button>
           ) : (
             <>
+              <Button variant="ghost" asChild><Link to="/pricing">Pricing</Link></Button>
               <Button variant="ghost" asChild><Link to="/auth">Sign in</Link></Button>
               <Button asChild><Link to="/signup">Get started</Link></Button>
             </>
@@ -148,6 +149,7 @@ function LandingPage() {
       <footer className="flex items-center gap-2 border-t py-6 text-sm text-muted-foreground">
         <Users className="h-4 w-4" />
         RunTheWeek — made for busy families.
+        <Link to="/pricing" className="ml-auto font-semibold text-primary">Pricing</Link>
       </footer>
     </div>
   );
