@@ -15,7 +15,7 @@ const GoogleMark = () => (
   </svg>
 );
 
-type Props = { open: boolean; onOpenChange: (open: boolean) => void; email?: string; returnTo: string };
+type Props = { open: boolean; onOpenChange: (open: boolean) => void; email?: string | undefined; returnTo: string };
 
 export function SignupModal({ open, onOpenChange, email, returnTo }: Props) {
   const [busy, setBusy] = useState<"google" | "apple" | null>(null);
