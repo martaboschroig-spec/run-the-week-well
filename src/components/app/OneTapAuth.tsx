@@ -17,7 +17,7 @@ const GoogleMark = () => (
   </svg>
 );
 
-export function OneTapAuth({ email = "", hint }: { email?: string; hint?: string }) {
+export function OneTapAuth({ email = "", hint, returnTo, onDone }: { email?: string; hint?: string; returnTo?: string; onDone?: () => void }) {
   const [value, setValue] = useState(email);
   const [busy, setBusy] = useState<"google" | "apple" | "link" | null>(null);
   const [sent, setSent] = useState<string | null>(null);
@@ -26,14 +26,14 @@ export function OneTapAuth({ email = "", hint }: { email?: string; hint?: string
   async function social(provider: "google" | "apple") {
     setBusy(provider);
     try {
-      const r = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin });
+      const r = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin + (returnTo ?? "") });
       if (r.error) {
         toast.error(r.error.message || "That sign-in didn't go through");
         setBusy(null);
         return;
       }
       if (r.redirected) return; // the browser is on its way to the provider
-      navigate({ to: "/schedule", replace: true });
+      if (onDone) onDone(); else navigate({ to: "/schedule", replace: true });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Something went wrong");
       setBusy(null);
@@ -45,7 +45,7 @@ export function OneTapAuth({ email = "", hint }: { email?: string; hint?: string
     setBusy("link");
     setSent(null);
     try {
-      const { error } = await supabase.auth.signInWithOtp({ email: value, options: { emailRedirectTo: window.location.origin } });
+      const { error } = await supabase.auth.signInWithOtp({ email: value, options: { emailRedirectTo: window.location.origin + (returnTo ?? "") } });
       if (error) throw error;
       setSent(`We emailed a sign-in link to ${value}. Open it on this device.`);
     } catch (err) {

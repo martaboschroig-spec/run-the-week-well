@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, Lock, CreditCard } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { OneTapAuth } from "@/components/app/OneTapAuth";
 import { PhoneMock } from "@/components/app/PhoneMock";
 
@@ -32,6 +33,12 @@ function SignUpPage() {
   useEffect(() => {
     localStorage.setItem("rtw-chosen-plan", plan);
   }, [plan]);
+  const [step, setStep] = useState<1 | 2>(1);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => { if (data.session) setStep(2); });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) setStep(2); });
+    return () => sub.subscription.unsubscribe();
+  }, []);
   return (
     <div className="mx-auto grid min-h-screen max-w-4xl items-center gap-8 px-6 py-10 md:grid-cols-2">
       <div className="md:order-2">
@@ -127,19 +134,59 @@ function SignUpPage() {
       </div>
 
       <div>
-        <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
-          <h2 className="text-2xl font-extrabold tracking-tight">Create your account</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {email ? "Use the email your family added for you." : "You'll set up your family in the next step."}
-          </p>
-          <div className="mt-6">
-            <OneTapAuth email={email ?? ""} />
+        <ol className="mb-4 flex items-center gap-2 text-xs font-bold" aria-label="Steps">
+          <li className={"flex items-center gap-1.5 " + (step === 1 ? "text-primary" : "text-muted-foreground")}>
+            <span className={"grid h-6 w-6 place-items-center rounded-full " + (step === 1 ? "bg-primary text-primary-foreground" : "bg-covered-soft text-covered")}>{step === 2 ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : "1"}</span>
+            Your account
+          </li>
+          <span className="h-px flex-1 bg-border" />
+          <li className={"flex items-center gap-1.5 " + (step === 2 ? "text-primary" : "text-muted-foreground")}>
+            <span className={"grid h-6 w-6 place-items-center rounded-full " + (step === 2 ? "bg-primary text-primary-foreground" : "bg-muted")}>2</span>
+            Payment
+          </li>
+        </ol>
+        {step === 1 ? (
+          <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
+            <h2 className="text-2xl font-extrabold tracking-tight">Create your account</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {email ? "Use the email your family added for you." : "Next, you'll add a card to start your 7-day trial."}
+            </p>
+            <div className="mt-6">
+              <OneTapAuth email={email ?? ""} returnTo="/signup" onDone={() => setStep(2)} />
+            </div>
           </div>
-        </div>
-        <p className="mt-4 text-center text-sm">
-          <Link to="/auth" className="font-semibold text-primary">I already have an account</Link>
-        </p>
-        <p className="mt-2 text-center text-xs text-muted-foreground">Billing opens soon — nothing is charged today.</p>
+        ) : (
+          <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
+            <h2 className="text-2xl font-extrabold tracking-tight">Start your trial</h2>
+            <div className="mt-4 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+              <Lock className="h-3.5 w-3.5" /> Secure payment <span className="h-px flex-1 bg-border" />
+            </div>
+            <div className="mt-3 grid gap-2.5">
+              <button type="button" disabled className="h-12 rounded-xl bg-foreground text-base font-bold text-background">Apple Pay</button>
+              <button type="button" disabled className="h-12 rounded-xl bg-foreground text-base font-bold text-background">Google Pay</button>
+              <button type="button" disabled className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary text-base font-bold text-primary-foreground">
+                <CreditCard className="h-4 w-4" /> Credit or debit card
+              </button>
+            </div>
+            <div className="mt-4 flex justify-center gap-2 text-[10px] font-extrabold">
+              {["VISA", "MASTERCARD", "AMEX"].map((c) => <span key={c} className="rounded-md border-2 border-border px-2 py-1">{c}</span>)}
+            </div>
+            <div className="mt-5 flex items-baseline justify-between border-t pt-4">
+              <span className="font-bold">Due today</span>
+              <span className="text-3xl font-extrabold tracking-tight">$1.95</span>
+            </div>
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              You pay $1.95 today for 7 days of full access. Then your plan renews at $9.99 every 4 weeks until you cancel.
+            </p>
+            <p className="mt-3 rounded-2xl bg-sun-soft p-3 text-center text-xs font-semibold">Card payments open soon — nothing is charged yet.</p>
+            <Link to="/schedule" className="mt-3 block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
+          </div>
+        )}
+        {step === 1 && (
+          <p className="mt-4 text-center text-sm">
+            <Link to="/auth" className="font-semibold text-primary">I already have an account</Link>
+          </p>
+        )}
       </div>
     </div>
   );
