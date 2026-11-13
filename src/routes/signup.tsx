@@ -6,8 +6,9 @@ import { OneTapAuth } from "@/components/app/OneTapAuth";
 import { PhoneMock } from "@/components/app/PhoneMock";
 
 export const Route = createFileRoute("/signup")({
-  validateSearch: (search: Record<string, unknown>): { email?: string | undefined; plan?: "family" | "plus" | undefined } => ({
+  validateSearch: (search: Record<string, unknown>): { email?: string | undefined; plan?: "family" | "plus" | undefined; step?: 2 | undefined } => ({
     email: typeof search["email"] === "string" ? search["email"] : undefined,
+    step: Number(search["step"]) === 2 ? 2 : undefined,
     plan: search["plan"] === "plus" ? "plus" : search["plan"] === "family" ? "family" : undefined,
   }),
   head: () => ({
@@ -28,12 +29,12 @@ const PLANS = [
 ];
 
 function SignUpPage() {
-  const { email, plan = "family" } = Route.useSearch();
+  const { email, plan = "family", step: stepParam } = Route.useSearch();
   const navigate = useNavigate({ from: "/signup" });
   useEffect(() => {
     localStorage.setItem("rtw-chosen-plan", plan);
   }, [plan]);
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2>(stepParam === 2 ? 2 : 1);
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => { if (data.session) setStep(2); });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) setStep(2); });
