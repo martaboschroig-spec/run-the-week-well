@@ -24,7 +24,7 @@ export const Route = createFileRoute("/signup")({
 
 function SignUpPage() {
   const { email: prefill } = Route.useSearch();
-  const [email, setEmail] = useState(prefill);
+  const [email, setEmail] = useState(prefill ?? "");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
