@@ -10,7 +10,6 @@ import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import {
   registerPushToken,
-  removePushToken,
   renameHousehold,
   saveAlertPrefs,
   saveMember,
@@ -51,7 +50,6 @@ function Settings() {
   const saveM = useServerFn(saveMember);
   const savePrefs = useServerFn(saveAlertPrefs);
   const regTok = useServerFn(registerPushToken);
-  const delTok = useServerFn(removePushToken);
   const refresh = useRefresh();
   const qc = useQueryClient();
   const navigate = useNavigate();
@@ -107,7 +105,6 @@ function Settings() {
     setBusy(true);
     try {
       await disablePush();
-      await delTok({ data: { token: "" } }).catch(() => {});
       setNotice("Alerts are off in this browser.");
     } finally {
       setBusy(false);
