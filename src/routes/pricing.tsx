@@ -76,9 +76,10 @@ const PLANS = [
 function PricingPage() {
   const { signedIn } = Route.useLoaderData();
   return (
+    <div className="theme-playful min-h-screen">
     <div className="mx-auto max-w-5xl px-6">
       <header className="flex items-center gap-2 py-6">
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rotate-[-6deg] rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
         <span className="text-lg font-extrabold">RunTheWeek</span>
         <nav className="ml-auto flex items-center gap-2">
           {signedIn ? (
@@ -92,8 +93,11 @@ function PricingPage() {
         </nav>
       </header>
 
-      <section className="py-10 text-center sm:py-14">
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Pricing that covers the family</h1>
+      <section className="relative py-10 text-center sm:py-14">
+        <span aria-hidden className="absolute left-4 top-6 h-16 w-16 rounded-full bg-sun-soft sm:left-16" />
+        <span aria-hidden className="absolute right-6 top-20 h-10 w-10 rotate-12 rounded-2xl bg-accent sm:right-20" />
+        <span className="relative inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold">Try Family for 7 days — $1.95</span>
+        <h1 className="relative mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl">Pricing that covers <span className="text-primary">the whole family</span></h1>
         <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
           One plan per household, not per person. Start free and only pay when everyone in the family is on it.
         </p>
@@ -105,30 +109,30 @@ function PricingPage() {
             key={p.id}
             className={
               p.highlight
-                ? "relative flex flex-col rounded-3xl border-2 border-primary bg-card p-6 shadow-soft"
-                : "flex flex-col rounded-3xl border bg-card p-6 shadow-soft"
+                ? "relative flex flex-col rounded-[2rem] border-4 border-primary bg-card p-7 shadow-soft lg:-translate-y-3"
+                : "flex flex-col rounded-[2rem] border-2 border-border bg-card p-7 shadow-soft"
             }
           >
             {p.highlight && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 -rotate-2 rounded-full bg-sun px-4 py-1 text-xs font-extrabold text-foreground ">
                 Most families pick this
               </span>
             )}
             <p className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{p.name}</p>
-            <p className="mt-3 text-4xl font-extrabold tracking-tight">{p.price}</p>
+            <p className={"mt-3 text-5xl font-extrabold tracking-tight " + (p.highlight ? "text-primary" : "")}>{p.price}</p>
             <p className="text-sm text-muted-foreground">{p.per}</p>
             <p className="mt-3 text-sm font-medium">{p.blurb}</p>
             <ul className="mt-5 grid flex-1 content-start gap-2 text-sm">
               {p.features.map((f) => (
                 <li key={f} className="flex items-start gap-2">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-covered" />
+                  <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent"><Check className="h-3 w-3 text-accent-foreground" strokeWidth={3} /></span>
                   <span>{f}</span>
                 </li>
               ))}
             </ul>
             <Button
               size="lg"
-              className="mt-6 w-full"
+              className="mt-6 w-full rounded-full font-bold"
               variant={p.highlight ? "default" : "outline"}
               asChild
             >
@@ -141,21 +145,21 @@ function PricingPage() {
       <section className="border-t py-14">
         <div className="grid gap-6 sm:grid-cols-3">
           <div className="flex items-start gap-3">
-            <Users className="mt-1 h-5 w-5 text-primary" />
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-sun-soft"><Users className="h-5 w-5 text-primary" /></span>
             <div>
               <p className="font-bold">One bill, whole household</p>
               <p className="mt-1 text-sm text-muted-foreground">Grandma, the sitter, the carpool parent — they join free once the family is on a plan.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <HeartHandshake className="mt-1 h-5 w-5 text-primary" />
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-accent"><HeartHandshake className="h-5 w-5 text-accent-foreground" /></span>
             <div>
               <p className="font-bold">Stop when you want</p>
               <p className="mt-1 text-sm text-muted-foreground">Cancel from Settings. Your week stays readable either way.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <Sparkles className="mt-1 h-5 w-5 text-primary" />
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-sun-soft"><Sparkles className="h-5 w-5 text-primary" /></span>
             <div>
               <p className="font-bold">Nothing to install</p>
               <p className="mt-1 text-sm text-muted-foreground">It runs in the browser on any phone, and you can add it to your home screen.</p>
@@ -164,12 +168,12 @@ function PricingPage() {
         </div>
       </section>
 
-      <section className="my-6 rounded-3xl bg-primary px-6 py-12 text-center text-primary-foreground">
+      <section className="my-6 rounded-[2.5rem] bg-secondary px-6 py-14 text-center text-secondary-foreground">
         <h2 className="text-3xl font-extrabold tracking-tight">Try it on this week</h2>
-        <p className="mx-auto mt-2 max-w-md text-primary-foreground/80">
+        <p className="mx-auto mt-2 max-w-md text-secondary-foreground/90">
           Add Tuesday's activities and see who's covering what — free, no card.
         </p>
-        <Button size="lg" variant="secondary" className="mt-6" asChild>
+        <Button size="lg" className="mt-6 rounded-full font-bold" asChild>
           <Link to={signedIn ? "/schedule" : "/signup"}>{signedIn ? "Open my week" : "Get started free"}</Link>
         </Button>
       </section>
@@ -179,6 +183,7 @@ function PricingPage() {
         RunTheWeek — made for busy families.
         <span className="ml-auto">Billing opens soon. Everything is free to use until then.</span>
       </footer>
+    </div>
     </div>
   );
 }
