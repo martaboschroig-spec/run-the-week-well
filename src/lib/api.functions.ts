@@ -257,3 +257,33 @@ export const markMessagesRead = createServerFn({ method: "POST" }).middleware([r
     ok(await (context as Ctx).supabase.from("activity_notes").update({ read_at: new Date().toISOString() }).eq("notify_member_id", me.member.id).is("read_at", null));
     return true;
   });
+
+// ----- Where each person wants to be reached -----
+const phoneShape = z.string().trim().max(24).regex(/^\+?[\d\s().-]{7,20}$/, "That phone number doesn't look right");
+
+export const saveAlertPrefs = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { phone: string | null; notifyEmail: boolean; notifyPush: boolean; notifySms: boolean }) =>
+    z.object({ phone: phoneShape.nullable(), notifyEmail: z.boolean(), notifyPush: z.boolean(), notifySms: z.boolean() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const me = await requireMe(context as Ctx);
+    const phone = data.phone && data.phone.length ? data.phone : null;
+    ok(await (context as Ctx).supabase.from("family_members")
+      .update({ phone, notify_email: data.notifyEmail, notify_push: data.notifyPush, notify_sms: data.notifySms })
+      .eq("id", me.member.id));
+    return true;
+  });
+
+export const registerPushToken = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { token: string }) => z.object({ token: z.string().min(20).max(600) }).parse(d))
+  .handler(async ({ data, context }) => {
+    const me = await requireMe(context as Ctx);
+    const sb = (context as Ctx).supabase;
+    const seen = ok(await sb.from("push_tokens").select("id").eq("token", data.token).maybeSingle()) as any;
+    if (seen) ok(await sb.from("push_tokens").update({ member_id: me.member.id, household_id: me.household.id, last_seen_at: new Date().toISOString() }).eq("id", seen.id));
+    else ok(await sb.from("push_tokens").insert({ token: data.token, member_id: me.member.id, household_id: me.household.id }));
+    return true;
+  });
+
+export const removePushToken = createServerFn({ method: "POST" }).middleware([requireSupabaseAuth])
+  .inputValidator((d: { token: string }) => z.object({ token: z.string().min(20).max(600) }).parse(d))
+  .handler(async ({ data, context }) => { ok(await (context as Ctx).supabase.from("push_tokens").delete().eq("token", data.token)); return true; });
