@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { OneTapAuth } from "@/components/app/OneTapAuth";
+import { MagicLinkAuth } from "@/components/app/MagicLinkAuth";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): { email?: string | undefined } => ({
@@ -32,7 +32,7 @@ function AuthPage() {
           {email ? "Use the email your family added for you." : "Pick a way in — it takes a second."}
         </p>
         <div className="mt-6">
-          <OneTapAuth emailOnly email={email ?? ""} />
+          <MagicLinkAuth email={email ?? ""} />
         </div>
       </div>
       <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
