@@ -121,7 +121,7 @@ function PricingPage() {
               variant={p.highlight ? "default" : "outline"}
               asChild
             >
-              <Link to={signedIn ? "/schedule" : "/signup"}>{p.cta}</Link>
+              {signedIn ? <Link to="/schedule">{p.cta}</Link> : <Link to="/signup" search={{ plan: p.id === "plus" ? "plus" : "family" }}>{p.cta}</Link>}
             </Button>
           </div>
         ))}
