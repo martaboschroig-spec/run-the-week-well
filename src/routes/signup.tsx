@@ -37,8 +37,10 @@ function SignUpPage() {
           <OneTapAuth email={email ?? ""} />
         </div>
       </div>
-      <div className="mt-6 text-sm">
+      <div className="mt-6 flex items-center justify-center gap-4 text-sm">
         <Link to="/auth" className="font-semibold text-primary">I already have an account</Link>
+        <span className="text-muted-foreground">·</span>
+        <Link to="/pricing" className="font-semibold text-primary">See pricing</Link>
       </div>
     </div>
   );

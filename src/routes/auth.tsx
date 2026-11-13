@@ -38,6 +38,9 @@ function AuthPage() {
       <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
         New here? Ask whoever runs your household to add your email in Family — then use that email above.
       </p>
+      <p className="mt-3 text-center text-sm">
+        <Link to="/pricing" className="font-semibold text-primary">See pricing</Link>
+      </p>
     </div>
   );
 }
