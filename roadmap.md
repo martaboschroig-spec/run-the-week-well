@@ -3,3 +3,4 @@
 - [x] Screens: auth, onboarding, Schedule (day/week/month), My Tasks, Activities, Add/Edit, Family, person view, Notifications + history, Settings
 - [x] Final pass: check every section of the brief and add anything missing
 - [x] Design as a web app: no marketing landing, entry is sign-in only, sign-up not advertised (reachable via family join link)
+- [ ] Give the sign-in Home much more visual body (brand pitch + sign-in card)
