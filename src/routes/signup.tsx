@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Check, Lock, CreditCard, ShieldCheck, RotateCcw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { OneTapAuth } from "@/components/app/OneTapAuth";
+import { MagicLinkAuth } from "@/components/app/MagicLinkAuth";
 import { PhoneMock } from "@/components/app/PhoneMock";
 
 export const Route = createFileRoute("/signup")({
@@ -76,7 +76,7 @@ function SignUpPage() {
               {email ? "Use the email your family added for you." : "Next, you'll add a card to start your 7-day trial."}
             </p>
             <div className="mt-6">
-              <OneTapAuth email={email ?? ""} emailOnly returnTo="/signup" onDone={() => setStep(2)} />
+              <MagicLinkAuth email={email ?? ""} returnTo="/signup" />
             </div>
           </div>
         ) : (
