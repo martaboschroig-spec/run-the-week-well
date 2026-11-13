@@ -14,13 +14,352 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activities: {
+        Row: {
+          child_id: string
+          created_at: string
+          end_time: string
+          id: string
+          location: string
+          name: string
+          recurrence: string
+          start_date: string
+          start_time: string
+          until_date: string | null
+          weekdays: number[]
+        }
+        Insert: {
+          child_id: string
+          created_at?: string
+          end_time: string
+          id?: string
+          location?: string
+          name: string
+          recurrence?: string
+          start_date: string
+          start_time: string
+          until_date?: string | null
+          weekdays?: number[]
+        }
+        Update: {
+          child_id?: string
+          created_at?: string
+          end_time?: string
+          id?: string
+          location?: string
+          name?: string
+          recurrence?: string
+          start_date?: string
+          start_time?: string
+          until_date?: string | null
+          weekdays?: number[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_assignments: {
+        Row: {
+          activity_id: string
+          id: string
+          kind: string
+          member_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          activity_id: string
+          id?: string
+          kind: string
+          member_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activity_id?: string
+          id?: string
+          kind?: string
+          member_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_assignments_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_assignments_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_items: {
+        Row: {
+          activity_id: string
+          checked: boolean
+          created_at: string
+          id: string
+          label: string
+          position: number
+        }
+        Insert: {
+          activity_id: string
+          checked?: boolean
+          created_at?: string
+          id?: string
+          label: string
+          position?: number
+        }
+        Update: {
+          activity_id?: string
+          checked?: boolean
+          created_at?: string
+          id?: string
+          label?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_items_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      children: {
+        Row: {
+          age: number | null
+          color: string
+          created_at: string
+          household_id: string
+          id: string
+          name: string
+        }
+        Insert: {
+          age?: number | null
+          color?: string
+          created_at?: string
+          household_id: string
+          id?: string
+          name: string
+        }
+        Update: {
+          age?: number | null
+          color?: string
+          created_at?: string
+          household_id?: string
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "children_household_id_fkey"
+            columns: ["household_id"]
+            isOneToOne: false
+            referencedRelation: "households"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      family_members: {
+        Row: {
+          created_at: string
+          email: string | null
+          household_id: string
+          id: string
+          name: string
+          role_label: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          household_id: string
+          id?: string
+          name: string
+          role_label?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          household_id?: string
+          id?: string
+          name?: string
+          role_label?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_members_household_id_fkey"
+            columns: ["household_id"]
+            isOneToOne: false
+            referencedRelation: "households"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      households: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          name?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          read_at: string | null
+          recipient_member_id: string
+          request_id: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          recipient_member_id: string
+          request_id: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          recipient_member_id?: string
+          request_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_recipient_member_id_fkey"
+            columns: ["recipient_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "reassignment_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reassignment_requests: {
+        Row: {
+          assignment_id: string
+          created_at: string
+          from_member_id: string
+          id: string
+          message: string | null
+          requested_by_member_id: string
+          responded_at: string | null
+          status: string
+          to_member_id: string
+        }
+        Insert: {
+          assignment_id: string
+          created_at?: string
+          from_member_id: string
+          id?: string
+          message?: string | null
+          requested_by_member_id: string
+          responded_at?: string | null
+          status?: string
+          to_member_id: string
+        }
+        Update: {
+          assignment_id?: string
+          created_at?: string
+          from_member_id?: string
+          id?: string
+          message?: string | null
+          requested_by_member_id?: string
+          responded_at?: string | null
+          status?: string
+          to_member_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reassignment_requests_assignment_id_fkey"
+            columns: ["assignment_id"]
+            isOneToOne: false
+            referencedRelation: "activity_assignments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reassignment_requests_from_member_id_fkey"
+            columns: ["from_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reassignment_requests_requested_by_member_id_fkey"
+            columns: ["requested_by_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reassignment_requests_to_member_id_fkey"
+            columns: ["to_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      activity_household: { Args: { _activity: string }; Returns: string }
+      cancel_change: { Args: { _request: string }; Returns: undefined }
+      create_household: {
+        Args: { _me: string; _name: string }
+        Returns: string
+      }
+      is_household_member: { Args: { _household: string }; Returns: boolean }
+      link_me: { Args: never; Returns: string }
+      request_change: {
+        Args: { _assignment: string; _message?: string; _to: string }
+        Returns: string
+      }
+      respond_change: {
+        Args: { _accept: boolean; _request: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
