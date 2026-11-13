@@ -3,10 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { MapPin, Bell } from "lucide-react";
+import { MapPin, Bell, MessageSquare } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { cancelChange, markNotificationsRead, respondChange } from "@/lib/api.functions";
-import { errMsg, kindLabel, localToday, notificationsQuery, overviewQuery, time12, toDate, useRefresh, verb, who } from "@/lib/ui";
+import { cancelChange, markMessagesRead, markNotificationsRead, respondChange } from "@/lib/api.functions";
+import { errMsg, kindLabel, localToday, messagesQuery, notificationsQuery, overviewQuery, time12, toDate, useRefresh, verb, who } from "@/lib/ui";
 import type { Data } from "@/components/app/parts";
 import type { Activity } from "@/lib/domain/logic";
 import { cn } from "@/lib/utils";
@@ -37,6 +38,9 @@ function Notifications() {
   const respond = useServerFn(respondChange);
   const cancel = useServerFn(cancelChange);
   const markRead = useServerFn(markNotificationsRead);
+  const msgs = useQuery(messagesQuery());
+  const markMsgs = useServerFn(markMessagesRead);
+  useEffect(() => { const t = setTimeout(() => markMsgs().then(() => msgs.refetch()).catch(() => {}), 4000); return () => clearTimeout(t); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const refresh = useRefresh();
   useEffect(() => { markRead().then(() => n.refetch()).catch(() => {}); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -58,7 +62,17 @@ function Notifications() {
       <h1 className="text-3xl font-extrabold tracking-tight">Notifications</h1>
 
       <section className="space-y-3">
-        {asks.length === 0 && updates.length === 0 && (
+        {(msgs.data ?? []).map((m) => {
+          const a = act(m.activity_id);
+          return (
+            <Link key={m.id} to="/activities/$id" params={{ id: m.activity_id }} className={cn("block rounded-3xl border p-5 shadow-soft", m.read_at ? "bg-card" : "bg-waiting-soft")}>
+              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-primary"><MessageSquare className="h-4 w-4" />{m.read_at ? "Note" : "New note for you"}</div>
+              <p className="mt-2 font-bold">{mem(m.author_member_id)} wants you to know — {kid(a)}, {a?.name}</p>
+              <p className="mt-1 whitespace-pre-wrap">{m.body}</p>
+            </Link>
+          );
+        })}
+        {asks.length === 0 && updates.length === 0 && !(msgs.data ?? []).length && (
           <div className="flex flex-col items-center rounded-3xl border border-dashed p-8 text-center text-muted-foreground"><Bell className="mb-2 h-6 w-6" />No requests right now.</div>
         )}
         {asks.map((x) => {

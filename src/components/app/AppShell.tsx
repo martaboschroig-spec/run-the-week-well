@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Bell, CalendarDays, CheckSquare, ListChecks, Users, Plus, Settings } from "lucide-react";
-import { meQuery, notificationsQuery } from "@/lib/ui";
+import { meQuery, notificationsQuery, messagesQuery } from "@/lib/ui";
 import { Onboarding } from "./Onboarding";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,8 @@ function Logo() {
 
 function BellLink() {
   const { data } = useQuery(notificationsQuery());
-  const unread = (data ?? []).filter((n) => !n.read_at).length;
+  const msgs = useQuery(messagesQuery());
+  const unread = (data ?? []).filter((n) => !n.read_at).length + (msgs.data ?? []).filter((n) => !n.read_at).length;
   return (
     <Link to="/notifications" aria-label="Notifications" className="relative grid h-11 w-11 place-items-center rounded-full hover:bg-secondary">
       <Bell className="h-5 w-5" />
