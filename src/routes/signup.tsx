@@ -6,15 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/signup")({
-  validateSearch: (search: Record<string, unknown>): { email: string } => ({
-    email: typeof search["email"] === "string" ? search["email"] : "",
+  validateSearch: (search: Record<string, unknown>): { email?: string | undefined } => ({
+    email: typeof search["email"] === "string" ? search["email"] : undefined,
   }),
   head: () => ({
     meta: [
-      { title: "Join your family — RunTheWeek" },
-      { name: "description", content: "Create your RunTheWeek account and see your family's drop-offs and pickups." },
-      { property: "og:title", content: "Join your family — RunTheWeek" },
-      { property: "og:description", content: "Create your account to see your tasks and requests." },
+      { title: "Get started — RunTheWeek" },
+      { name: "description", content: "Create your RunTheWeek account and get your family's week covered." },
+      { property: "og:title", content: "Get started — RunTheWeek" },
+      { property: "og:description", content: "Create your account and see your family's drop-offs and pickups in one calm plan." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/signup")({
 
 function SignUpPage() {
   const { email: prefill } = Route.useSearch();
-  const [email, setEmail] = useState(prefill);
+  const [email, setEmail] = useState(prefill ?? "");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
@@ -46,8 +46,10 @@ function SignUpPage() {
   return (
     <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6">
       <div className="flex items-center gap-2 text-lg font-extrabold"><span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">R</span>RunTheWeek</div>
-      <h1 className="mt-8 text-3xl font-extrabold tracking-tight">Join your family</h1>
-      <p className="mt-2 text-muted-foreground">Use the email your family added for you.</p>
+      <h1 className="mt-8 text-3xl font-extrabold tracking-tight">Create your account</h1>
+      <p className="mt-2 text-muted-foreground">
+        {prefill ? "Use the email your family added for you." : "Free to start — you'll set up your family in the next step."}
+      </p>
       {sent ? (
         <p className="mt-6 rounded-2xl bg-covered-soft p-4 font-medium">{sent}</p>
       ) : (
