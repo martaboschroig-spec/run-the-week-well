@@ -34,7 +34,7 @@ function Landing() {
         ))}
       </ul>
       <div className="mt-10 flex gap-3">
-        <Button size="lg" asChild><Link to="/auth">Get started</Link></Button>
+        <Button size="lg" asChild><Link to="/signup">Get started</Link></Button>
         <Button size="lg" variant="outline" asChild><Link to="/auth">Sign in</Link></Button>
       </div>
     </div>
