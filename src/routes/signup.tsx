@@ -76,7 +76,7 @@ function SignUpPage() {
               {email ? "Use the email your family added for you." : "Next, you'll add a card to start your 7-day trial."}
             </p>
             <div className="mt-6">
-              <OneTapAuth email={email ?? ""} returnTo="/signup" onDone={() => setStep(2)} />
+              <OneTapAuth email={email ?? ""} emailOnly returnTo="/signup" onDone={() => setStep(2)} />
             </div>
           </div>
         ) : (

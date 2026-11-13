@@ -17,7 +17,7 @@ const GoogleMark = () => (
   </svg>
 );
 
-export function OneTapAuth({ email = "", hint, returnTo, onDone }: { email?: string; hint?: string; returnTo?: string; onDone?: () => void }) {
+export function OneTapAuth({ email = "", hint, returnTo, onDone, emailOnly }: { emailOnly?: boolean; email?: string; hint?: string; returnTo?: string; onDone?: () => void }) {
   const [value, setValue] = useState(email);
   const [busy, setBusy] = useState<"google" | "apple" | "link" | null>(null);
   const [sent, setSent] = useState<string | null>(null);
@@ -57,6 +57,8 @@ export function OneTapAuth({ email = "", hint, returnTo, onDone }: { email?: str
 
   return (
     <div className="grid gap-3">
+      {!emailOnly && (
+        <>
       <Button
         type="button"
         size="lg"
@@ -83,6 +85,9 @@ export function OneTapAuth({ email = "", hint, returnTo, onDone }: { email?: str
       <div className="my-1 flex items-center gap-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         <span className="h-px flex-1 bg-border" /> or <span className="h-px flex-1 bg-border" />
       </div>
+
+        </>
+      )}
 
       {sent ? (
         <p className="rounded-2xl bg-covered-soft p-4 font-medium">{sent}</p>
