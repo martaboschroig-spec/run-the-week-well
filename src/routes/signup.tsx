@@ -109,6 +109,10 @@ function SignUpPage() {
                   <p className="truncate text-[10px] leading-tight text-muted-foreground">Teacher meeting moved to Thursday 4pm</p>
                 </div>
               </div>
+              <div className="mt-2 rounded-2xl bg-muted/70 p-2">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Next up</p>
+                <p className="mt-0.5 text-[10px] font-semibold">Sat · Swim 9:00 · Dad drops off</p>
+              </div>
               <div className="flex-1" />
               <div aria-hidden="true" className="flex items-center justify-around rounded-2xl bg-muted px-2 py-1.5 text-[10px] font-bold">
                 <span className="text-primary">Schedule</span>
