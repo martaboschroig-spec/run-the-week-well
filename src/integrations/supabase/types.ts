@@ -276,6 +276,7 @@ export type Database = {
       }
       reassignment_requests: {
         Row: {
+          acknowledged_at: string | null
           assignment_id: string
           created_at: string
           from_member_id: string
@@ -287,6 +288,7 @@ export type Database = {
           to_member_id: string
         }
         Insert: {
+          acknowledged_at?: string | null
           assignment_id: string
           created_at?: string
           from_member_id: string
@@ -298,6 +300,7 @@ export type Database = {
           to_member_id: string
         }
         Update: {
+          acknowledged_at?: string | null
           assignment_id?: string
           created_at?: string
           from_member_id?: string
@@ -344,6 +347,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      acknowledge_decline: { Args: { _request: string }; Returns: undefined }
       activity_household: { Args: { _activity: string }; Returns: string }
       cancel_change: { Args: { _request: string }; Returns: undefined }
       create_household: {
