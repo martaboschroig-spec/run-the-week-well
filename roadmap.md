@@ -14,6 +14,6 @@
 - [ ] Text alerts (SMS/WhatsApp): needs Twilio connected + a sending number
 - [x] Pricing page at /pricing, linked from the landing
 - [x] Sign-up shows plan picker + account together
-- [ ] Billing: connect the payment provider, then gate the paid plans
+- [ ] Billing: embedded payment form on sign-up (needs payments enabled — waiting for user OK)
 - [x] No email verification on sign-up: confirm emails off, signup goes straight into the app
 - [x] Passwordless access: magic link by email + Sign in with Google and Apple
