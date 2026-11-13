@@ -68,7 +68,7 @@ export function NotesPanel({ data, activityId }: { data: Data; activityId: strin
       <div className="space-y-3">
         <Textarea value={body} onChange={(e) => setBody(e.target.value)} maxLength={2000} placeholder="e.g. Dr. Lee wants a follow-up in 3 weeks. Bring the vaccine card." className="min-h-24 rounded-2xl" />
         <div className="flex flex-wrap items-center gap-3">
-          <label className="flex items-center gap-2 text-sm font-medium">
+          <label className="flex items-center gap-2 whitespace-nowrap text-sm font-medium">
             <BellRing className="h-4 w-4 text-primary" /> Let someone know
             <select className={selectClass + " h-10 w-auto"} value={notify} onChange={(e) => setNotify(e.target.value)}>
               <option value="">No one</option>
