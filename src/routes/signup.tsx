@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/signup")({
   validateSearch: (search: Record<string, unknown>): { email: string } => ({
-    email: typeof search.email === "string" ? search.email : "",
+    email: typeof search["email"] === "string" ? search["email"] : "",
   }),
   head: () => ({
     meta: [
