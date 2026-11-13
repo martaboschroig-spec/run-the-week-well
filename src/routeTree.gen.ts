@@ -18,6 +18,8 @@ import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedActivitiesIndexRouteImport } from './routes/_authenticated/activities.index'
 import { Route as AuthenticatedActivitiesIdRouteImport } from './routes/_authenticated/activities.$id'
 import { Route as AuthenticatedActivitiesNewRouteImport } from './routes/_authenticated/activities.new'
+import { Route as AuthenticatedFamilyIndexRouteImport } from './routes/_authenticated/family.index'
+import { Route as AuthenticatedFamilyMemberIdRouteImport } from './routes/_authenticated/family.$memberId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -66,6 +68,18 @@ const AuthenticatedActivitiesNewRoute =
     path: '/activities/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFamilyIndexRoute =
+  AuthenticatedFamilyIndexRouteImport.update({
+    id: '/family/',
+    path: '/family/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFamilyMemberIdRoute =
+  AuthenticatedFamilyMemberIdRouteImport.update({
+    id: '/family/$memberId',
+    path: '/family/$memberId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,7 +89,9 @@ export interface FileRoutesByFullPath {
   '/tasks': typeof AuthenticatedTasksRoute
   '/activities/$id': typeof AuthenticatedActivitiesIdRoute
   '/activities/new': typeof AuthenticatedActivitiesNewRoute
+  '/family/$memberId': typeof AuthenticatedFamilyMemberIdRoute
   '/activities/': typeof AuthenticatedActivitiesIndexRoute
+  '/family/': typeof AuthenticatedFamilyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,7 +101,9 @@ export interface FileRoutesByTo {
   '/tasks': typeof AuthenticatedTasksRoute
   '/activities/$id': typeof AuthenticatedActivitiesIdRoute
   '/activities/new': typeof AuthenticatedActivitiesNewRoute
+  '/family/$memberId': typeof AuthenticatedFamilyMemberIdRoute
   '/activities': typeof AuthenticatedActivitiesIndexRoute
+  '/family': typeof AuthenticatedFamilyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,7 +115,9 @@ export interface FileRoutesById {
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
   '/_authenticated/activities/$id': typeof AuthenticatedActivitiesIdRoute
   '/_authenticated/activities/new': typeof AuthenticatedActivitiesNewRoute
+  '/_authenticated/family/$memberId': typeof AuthenticatedFamilyMemberIdRoute
   '/_authenticated/activities/': typeof AuthenticatedActivitiesIndexRoute
+  '/_authenticated/family/': typeof AuthenticatedFamilyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -109,7 +129,9 @@ export interface FileRouteTypes {
     | '/tasks'
     | '/activities/$id'
     | '/activities/new'
+    | '/family/$memberId'
     | '/activities/'
+    | '/family/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -119,7 +141,9 @@ export interface FileRouteTypes {
     | '/tasks'
     | '/activities/$id'
     | '/activities/new'
+    | '/family/$memberId'
     | '/activities'
+    | '/family'
   id:
     | '__root__'
     | '/'
@@ -130,7 +154,9 @@ export interface FileRouteTypes {
     | '/_authenticated/tasks'
     | '/_authenticated/activities/$id'
     | '/_authenticated/activities/new'
+    | '/_authenticated/family/$memberId'
     | '/_authenticated/activities/'
+    | '/_authenticated/family/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -205,6 +231,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedActivitiesNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/family/': {
+      id: '/_authenticated/family/'
+      path: '/family'
+      fullPath: '/family/'
+      preLoaderRoute: typeof AuthenticatedFamilyIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/family/$memberId': {
+      id: '/_authenticated/family/$memberId'
+      path: '/family/$memberId'
+      fullPath: '/family/$memberId'
+      preLoaderRoute: typeof AuthenticatedFamilyMemberIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -213,7 +253,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedTasksRoute: typeof AuthenticatedTasksRoute
   AuthenticatedActivitiesIdRoute: typeof AuthenticatedActivitiesIdRoute
   AuthenticatedActivitiesNewRoute: typeof AuthenticatedActivitiesNewRoute
+  AuthenticatedFamilyMemberIdRoute: typeof AuthenticatedFamilyMemberIdRoute
   AuthenticatedActivitiesIndexRoute: typeof AuthenticatedActivitiesIndexRoute
+  AuthenticatedFamilyIndexRoute: typeof AuthenticatedFamilyIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -221,7 +263,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedTasksRoute: AuthenticatedTasksRoute,
   AuthenticatedActivitiesIdRoute: AuthenticatedActivitiesIdRoute,
   AuthenticatedActivitiesNewRoute: AuthenticatedActivitiesNewRoute,
+  AuthenticatedFamilyMemberIdRoute: AuthenticatedFamilyMemberIdRoute,
   AuthenticatedActivitiesIndexRoute: AuthenticatedActivitiesIndexRoute,
+  AuthenticatedFamilyIndexRoute: AuthenticatedFamilyIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

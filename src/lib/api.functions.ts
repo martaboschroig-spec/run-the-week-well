@@ -47,11 +47,13 @@ export const getOverview = createServerFn({ method: "GET" }).middleware([require
     const me = await requireMe(context as Ctx);
     const hd = await loadData(context as Ctx, me.household.id);
     const overview = buildOverview(hd, data.from, data.to);
+    const withKind = (r: ChangeRequest) => { const a = hd.assignments.find((x) => x.id === r.assignment_id)!; return { ...r, kind: a.kind, activityId: a.activity_id }; };
+    const pendingRequests = hd.requests.filter((r) => r.status === "pending").map(withKind);
     const history = hd.requests.filter((r) => r.status !== "pending").slice(0, 30).map((r) => {
       const a = hd.assignments.find((x) => x.id === r.assignment_id)!;
       return { ...r, kind: a.kind, activityId: a.activity_id };
     });
-    return { me: me.member, household: me.household, members: hd.members, children: hd.children, activities: hd.activities, items: hd.items, assignments: hd.assignments, overview, history };
+    return { me: me.member, household: me.household, members: hd.members, children: hd.children, activities: hd.activities, items: hd.items, assignments: hd.assignments, overview, history, pendingRequests };
   });
 
 const activityInput = z.object({
