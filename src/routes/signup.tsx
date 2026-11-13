@@ -40,7 +40,11 @@ function SignUpPage() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => { if (data.session) setSignedIn(true); else if (stepParam !== 2) setModal(true); });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) { setSignedIn(true); setModal(false); } });
-    return () => sub.subscription.unsubscribe();
+    // The email link may open in another tab: re-check when this tab regains focus.
+    const recheck = () => supabase.auth.getSession().then(({ data }) => { if (data.session) { setSignedIn(true); setModal(false); } });
+    window.addEventListener("focus", recheck);
+    document.addEventListener("visibilitychange", recheck);
+    return () => { sub.subscription.unsubscribe(); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
   }, []);
   void navigate;
   const included = ["Shared family schedule", "Swaps that never get lost", "Notes & documents", "Alerts by email, push or text"];
