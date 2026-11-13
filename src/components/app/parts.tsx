@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -180,7 +180,7 @@ export function AttentionList({ data, items }: { data: Data; items: AttentionIte
         {items.map((it) => {
           const a = act(it.activityId);
           const name = a?.name.toLowerCase() ?? "activity";
-          let text = "", sub = "", actions: React.ReactNode = null;
+          let text = "", sub = "", actions: ReactNode = null;
           if (it.kind === "missing") {
             text = it.slotKind === "pickup" ? `${kid(it.childId)} still needs someone to pick her up from ${name}.` : `${kid(it.childId)} still needs a ride to ${name}.`;
             text = text.replace(" her ", " them ");
