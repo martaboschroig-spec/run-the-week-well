@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
  */
 export function PhoneMock({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div className={"mx-auto w-full max-w-[272px] " + className}>
+    <div className={"mx-auto w-full max-w-[300px] " + className}>
       <div className="relative rounded-[2.5rem] border-[10px] border-foreground bg-foreground p-0 shadow-phone">
         <div className="relative overflow-hidden rounded-[1.75rem] bg-card">
           <span

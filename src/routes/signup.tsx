@@ -73,7 +73,7 @@ function SignUpPage() {
         <div className="mt-4 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
           <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">What you get — a peek at Friday</p>
           <PhoneMock className="mt-4 -rotate-1">
-            <div className="flex h-[430px] flex-col">
+            <div className="flex h-[470px] flex-col">
               <div className="flex items-center justify-between pb-2 pt-1">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">Friday</p>
