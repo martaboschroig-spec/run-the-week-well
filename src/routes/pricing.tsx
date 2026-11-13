@@ -7,9 +7,9 @@ export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
       { title: "Pricing — RunTheWeek" },
-      { name: "description", content: "Free to start, Family at $9.99 a month or $99 a year. One plan for the whole household." },
+      { name: "description", content: "Free to start, Family: try 7 days for $1.95, then $9.99 every 4 weeks. One plan for the whole household." },
       { property: "og:title", content: "Pricing — RunTheWeek" },
-      { property: "og:description", content: "Free to start. Family covers two adults and all the kids for $9.99 a month." },
+      { property: "og:description", content: "Free to start. Family covers two adults and all the kids — 7-day trial for $1.95, then $9.99 every 4 weeks." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -40,8 +40,8 @@ const PLANS = [
   {
     id: "family",
     name: "Family",
-    price: "$9.99",
-    per: "a month, or $99 a year",
+    price: "$1.95",
+    per: "for your first 7 days, then $9.99 every 4 weeks",
     blurb: "The whole household, running on one plan.",
     features: [
       "2 adults + all your kids",
