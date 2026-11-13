@@ -71,13 +71,14 @@ function LandingPage() {
     <div className="mx-auto max-w-5xl px-6">
       {/* Nav */}
       <header className="flex items-center gap-2 py-6">
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
         <span className="text-lg font-extrabold">RunTheWeek</span>
         <nav className="ml-auto flex items-center gap-2">
           {signedIn ? (
             <Button asChild><Link to="/schedule">Open my week</Link></Button>
           ) : (
             <>
+              <Button variant="ghost" asChild><Link to="/pricing">Pricing</Link></Button>
               <Button variant="ghost" asChild><Link to="/auth">Sign in</Link></Button>
               <Button asChild><Link to="/signup">Get started</Link></Button>
             </>
@@ -148,6 +149,7 @@ function LandingPage() {
       <footer className="flex items-center gap-2 border-t py-6 text-sm text-muted-foreground">
         <Users className="h-4 w-4" />
         RunTheWeek — made for busy families.
+        <Link to="/pricing" className="ml-auto font-semibold text-primary">Pricing</Link>
       </footer>
     </div>
   );
