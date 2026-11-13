@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { OneTapAuth } from "@/components/app/OneTapAuth";
 
 export const Route = createFileRoute("/auth")({
