@@ -7,9 +7,9 @@ export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
       { title: "Pricing — RunTheWeek" },
-      { name: "description", content: "Free to start, Family: try 7 days for $1.95, then $9.99 every 4 weeks. One plan for the whole household." },
+      { name: "description", content: "Family Trial: try 7 days for $1.95, then $9.99 every 4 weeks. One plan for the whole household." },
       { property: "og:title", content: "Pricing — RunTheWeek" },
-      { property: "og:description", content: "Free to start. Family covers two adults and all the kids — 7-day trial for $1.95, then $9.99 every 4 weeks." },
+      { property: "og:description", content: "Family Trial covers two adults and all the kids — 7-day trial for $1.95, then $9.99 every 4 weeks." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -23,23 +23,8 @@ export const Route = createFileRoute("/pricing")({
 
 const PLANS = [
   {
-    id: "free",
-    name: "Free",
-    price: "$0",
-    per: "forever",
-    blurb: "See the week, spot what's missing.",
-    features: [
-      "1 adult",
-      "Week view for the family",
-      "Needs-attention flags",
-      "Ask for a swap once a week",
-    ],
-    cta: "Start free",
-    highlight: false,
-  },
-  {
     id: "family",
-    name: "Family",
+    name: "Family Trial",
     price: "$1.95",
     per: "for your first 7 days, then $9.99 every 4 weeks",
     blurb: "The whole household, running on one plan.",
@@ -99,11 +84,11 @@ function PricingPage() {
         <span className="relative inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold">Try Family for 7 days — $1.95</span>
         <h1 className="relative mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl">Pricing that covers <span className="text-primary">the whole family</span></h1>
         <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
-          One plan per household, not per person. Start free and only pay when everyone in the family is on it.
+          One plan per household, not per person. Try Family for 7 days, then pick what fits.
         </p>
       </section>
 
-      <section className="grid gap-6 pb-14 lg:grid-cols-3">
+      <section className="grid gap-6 pb-14 mx-auto max-w-3xl md:grid-cols-2">
         {PLANS.map((p) => (
           <div
             key={p.id}
@@ -171,10 +156,10 @@ function PricingPage() {
       <section className="my-6 rounded-[2.5rem] bg-secondary px-6 py-14 text-center text-secondary-foreground">
         <h2 className="text-3xl font-extrabold tracking-tight">Try it on this week</h2>
         <p className="mx-auto mt-2 max-w-md text-secondary-foreground/90">
-          Add Tuesday's activities and see who's covering what — free, no card.
+          Add Tuesday's activities and see who's covering what — 7 days for $1.95.
         </p>
         <Button size="lg" className="mt-6 rounded-full font-bold" asChild>
-          <Link to={signedIn ? "/schedule" : "/signup"}>{signedIn ? "Open my week" : "Get started free"}</Link>
+          <Link to={signedIn ? "/schedule" : "/signup"}>{signedIn ? "Open my week" : "Start for $1.95"}</Link>
         </Button>
       </section>
 
