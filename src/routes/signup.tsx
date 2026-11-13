@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Check } from "lucide-react";
 import { OneTapAuth } from "@/components/app/OneTapAuth";
+import { PhoneMock } from "@/components/app/PhoneMock";
 
 export const Route = createFileRoute("/signup")({
   validateSearch: (search: Record<string, unknown>): { email?: string | undefined; plan?: "family" | "plus" | undefined } => ({
@@ -71,22 +72,55 @@ function SignUpPage() {
         </div>
         <div className="mt-4 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
           <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">What you get — a peek at Friday</p>
-          <ul className="mt-3 grid gap-2">
-            {[
-              { kid: "Emma", what: "Soccer · 5:00 PM", who: "Mom drops off · Dad picks up", tone: "bg-kid-coral text-kid-coral-ink", state: "Covered", stateTone: "bg-covered-soft text-covered" },
-              { kid: "Leo", what: "Karate · 5:15 PM", who: "Grandma drops off · pickup?", tone: "bg-kid-blue text-kid-blue-ink", state: "Needs someone", stateTone: "bg-attention-soft text-attention" },
-              { kid: "Sophie", what: "Doctor · 7:00 PM", who: "Dad asked Mom to swap", tone: "bg-kid-sage text-kid-sage-ink", state: "Waiting", stateTone: "bg-waiting-soft text-waiting" },
-            ].map((r) => (
-              <li key={r.kid} className="flex items-center gap-3 rounded-2xl bg-muted p-3">
-                <span className={"grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-extrabold " + r.tone}>{r.kid[0]}</span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold">{r.kid} — {r.what}</p>
-                  <p className="truncate text-xs text-muted-foreground">{r.who}</p>
+          <PhoneMock className="mt-4 -rotate-1">
+            <div className="flex h-[470px] flex-col">
+              <div className="flex items-center justify-between pb-2 pt-1">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">Friday</p>
+                  <p className="text-sm font-extrabold tracking-tight">Your week</p>
                 </div>
-                <span className={"shrink-0 rounded-full px-2 py-0.5 text-xs font-bold " + r.stateTone}>{r.state}</span>
-              </li>
-            ))}
-          </ul>
+                <span className="grid h-6 w-6 place-items-center rounded-full bg-primary text-[10px] font-extrabold text-primary-foreground">1</span>
+              </div>
+              <p className="mb-2 rounded-full bg-attention-soft px-2.5 py-1 text-[10px] font-bold text-attention">1 pickup still needs someone</p>
+              <ul className="grid gap-1.5">
+                {[
+                  { kid: "Emma", what: "Soccer 5:00", who: "Mom drops off · Dad picks up", tone: "bg-kid-coral text-kid-coral-ink", state: "Covered", stateTone: "bg-covered-soft text-covered" },
+                  { kid: "Leo", what: "Karate 5:15", who: "Grandma drops off · pickup?", tone: "bg-kid-blue text-kid-blue-ink", state: "Needs someone", stateTone: "bg-attention-soft text-attention" },
+                  { kid: "Sophie", what: "Doctor 7:00", who: "Dad asked Mom to swap", tone: "bg-kid-sage text-kid-sage-ink", state: "Waiting", stateTone: "bg-waiting-soft text-waiting" },
+                ].map((r) => (
+                  <li key={r.kid} className="rounded-2xl bg-muted p-2">
+                    <div className="flex items-center gap-2">
+                      <span className={"grid h-7 w-7 shrink-0 place-items-center rounded-full text-[11px] font-extrabold " + r.tone}>{r.kid[0]}</span>
+                      <p className="min-w-0 flex-1 truncate text-xs font-bold leading-tight">{r.kid} · {r.what}</p>
+                      <span className={"shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-bold " + r.stateTone}>{r.state}</span>
+                    </div>
+                    <p className="mt-1 pl-9 text-[10px] leading-tight text-muted-foreground">{r.who}</p>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-2 rounded-2xl border border-dashed border-border p-2">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Bring for Doctor</p>
+                <p className="mt-0.5 text-[10px] font-semibold">Analysis forms · water bottle · insurance card</p>
+              </div>
+              <div className="mt-2 flex items-start gap-2 rounded-2xl bg-accent p-2">
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-[9px] font-extrabold text-primary-foreground">D</span>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold leading-tight">New note from Dad</p>
+                  <p className="truncate text-[10px] leading-tight text-muted-foreground">Teacher meeting moved to Thursday 4pm</p>
+                </div>
+              </div>
+              <div className="mt-2 rounded-2xl bg-muted/70 p-2">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Next up</p>
+                <p className="mt-0.5 text-[10px] font-semibold">Sat · Swim 9:00 · Dad drops off</p>
+              </div>
+              <div className="flex-1" />
+              <div aria-hidden="true" className="flex items-center justify-around rounded-2xl bg-muted px-2 py-1.5 text-[10px] font-bold">
+                <span className="text-primary">Schedule</span>
+                <span className="text-muted-foreground">Tasks</span>
+                <span className="text-muted-foreground">Family</span>
+              </div>
+            </div>
+          </PhoneMock>
           <p className="mt-3 text-xs text-muted-foreground">Plus gear checklists, notes and documents, and alerts by email, push or text.</p>
         </div>
         <Link to="/pricing" className="mt-3 inline-block text-sm font-semibold text-primary">See everything included</Link>

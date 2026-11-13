@@ -80,6 +80,7 @@
   --color-kid-butter: var(--kid-butter);
   --color-kid-butter-ink: var(--kid-butter-ink);
   --shadow-soft: var(--shadow-soft);
+  --shadow-phone: var(--shadow-phone);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -128,6 +129,7 @@
   --kid-butter: oklch(0.95 0.05 95);
   --kid-butter-ink: oklch(0.48 0.08 80);
   --shadow-soft: 0 1px 2px oklch(0.3 0.02 60 / 0.04), 0 4px 16px -6px oklch(0.3 0.02 60 / 0.08);
+  --shadow-phone: 0 2px 6px oklch(0.29 0.035 275 / 0.12), 0 26px 50px -22px oklch(0.29 0.035 275 / 0.5);
   --chart-1: oklch(0.52 0.075 185);
   --chart-2: oklch(0.6 0.1 155);
   --chart-3: oklch(0.62 0.11 70);
