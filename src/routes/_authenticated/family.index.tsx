@@ -53,7 +53,7 @@ function Family() {
             </ul>
           </section>
           <section className="space-y-3">
-            <div className="flex items-center justify-between"><h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Kids</h2><Button size="sm" variant="secondary" onClick={() => setChild({ color: KID_COLORS[d.children.length % KID_COLORS.length] })}><Plus className="h-4 w-4" /> Add</Button></div>
+            <div className="flex items-center justify-between"><h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Kids</h2><Button size="sm" variant="secondary" onClick={() => setChild({ color: KID_COLORS[d.children.length % KID_COLORS.length] ?? "lavender" })}><Plus className="h-4 w-4" /> Add</Button></div>
             <ul className="grid gap-3 sm:grid-cols-3">
               {d.children.map((c) => (
                 <li key={c.id}>

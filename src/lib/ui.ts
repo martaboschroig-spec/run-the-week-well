@@ -11,7 +11,7 @@ export const startOfWeek = (s: string) => shift(s, -toDate(s).getDay()); // Sund
 export const monthBounds = (s: string) => { const d = toDate(s); return { from: iso(new Date(d.getFullYear(), d.getMonth(), 1)), to: iso(new Date(d.getFullYear(), d.getMonth() + 1, 0)) }; };
 
 export function time12(t: string) {
-  const [h, m] = t.split(":").map(Number);
+  const [h = 0, m = 0] = t.split(":").map(Number);
   return `${((h + 11) % 12) + 1}:${pad(m)} ${h < 12 ? "AM" : "PM"}`;
 }
 export function dayLabel(s: string, today = localToday()) {

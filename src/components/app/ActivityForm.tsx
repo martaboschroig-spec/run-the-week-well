@@ -43,8 +43,8 @@ export function ActivityForm({ data, activityId }: { data: Data; activityId?: st
   const weekdaysShown = f.weekdays.length ? f.weekdays : [toDate(f.start_date).getDay()];
 
   async function submit() {
-    if (!f.name.trim()) return toast.error("Give the activity a name");
-    if (f.end_time <= f.start_time) return toast.error("End time must be after start time");
+    if (!f.name.trim()) { toast.error("Give the activity a name"); return; }
+    if (f.end_time <= f.start_time) { toast.error("End time must be after start time"); return; }
     setBusy(true);
     try {
       const pending = draft.trim() ? [...items, { id: undefined, label: draft.trim(), checked: false }] : items;

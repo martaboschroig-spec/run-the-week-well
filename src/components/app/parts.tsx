@@ -145,7 +145,7 @@ export function RequestChangeSheet({ open, onOpenChange, data, slot, o }: { open
           <Textarea className="mt-4 rounded-xl" placeholder="Add a note (optional)" value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={300} />
           <p className="mt-3 text-sm text-muted-foreground">You stay responsible until they say yes.</p>
           <Button size="lg" className="mt-4 w-full" disabled={!pick} onClick={async () => {
-            try { await req({ data: { assignmentId: slot.assignmentId, toMemberId: pick!, message: msg || undefined } }); await refresh(); onOpenChange(false); toast.success(`Asked ${who(data.members.find((m) => m.id === pick))}`); } catch (e) { toast.error(errMsg(e)); }
+            try { await req({ data: { assignmentId: slot.assignmentId, toMemberId: pick!, ...(msg ? { message: msg } : {}) } }); await refresh(); onOpenChange(false); toast.success(`Asked ${who(data.members.find((m) => m.id === pick))}`); } catch (e) { toast.error(errMsg(e)); }
           }}>Request change</Button>
         </div>
       </DrawerContent>

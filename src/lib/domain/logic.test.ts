@@ -32,7 +32,7 @@ describe("needs attention", () => {
       [["a1", "dropoff", "dad"], ["a1", "pickup", "mom"], ["a2", "dropoff", "dad"], ["a2", "pickup", "grandma"]],
     ), "2026-11-10", "2026-11-10");
     expect(o.attention).toHaveLength(1);
-    expect(o.attention[0]).toMatchObject({ kind: "conflict", memberId: "dad" });
+    expect(o.attention[0]!).toMatchObject({ kind: "conflict", memberId: "dad" });
   });
   it("back-to-back activities are not a conflict", () => {
     const o = buildOverview(base(
@@ -44,16 +44,16 @@ describe("needs attention", () => {
   it("pending request keeps the original person and shows waiting", () => {
     const req = { id: "r1", assignment_id: "a1-pickup", from_member_id: "mom", to_member_id: "grandma", requested_by_member_id: "mom", status: "pending" as const, message: null, created_at: "2026-11-02T00:00:00Z", responded_at: null, acknowledged_at: null };
     const o = buildOverview(base([act({})], [["a1", "dropoff", "dad"], ["a1", "pickup", "mom"]], [req]), "2026-11-10", "2026-11-10");
-    expect(o.occurrences[0].pickup.memberId).toBe("mom");
-    expect(o.occurrences[0].status).toBe("waiting");
+    expect(o.occurrences[0]!.pickup.memberId).toBe("mom");
+    expect(o.occurrences[0]!.status).toBe("waiting");
     expect(tasksFor(o.occurrences, "mom")).toHaveLength(1);
     expect(tasksFor(o.occurrences, "grandma")).toHaveLength(0);
   });
   it("declined request needs attention until acknowledged", () => {
     const req = { id: "r1", assignment_id: "a1-pickup", from_member_id: "mom", to_member_id: "grandma", requested_by_member_id: "mom", status: "declined" as const, message: null, created_at: "2026-11-02T00:00:00Z", responded_at: "2026-11-03T00:00:00Z", acknowledged_at: null };
     const d = base([act({})], [["a1", "dropoff", "dad"], ["a1", "pickup", "mom"]], [req]);
-    expect(buildOverview(d, "2026-11-10", "2026-11-10").attention[0].kind).toBe("declined");
-    d.requests[0].acknowledged_at = "2026-11-04T00:00:00Z";
+    expect(buildOverview(d, "2026-11-10", "2026-11-10").attention[0]!.kind).toBe("declined");
+    d.requests[0]!.acknowledged_at = "2026-11-04T00:00:00Z";
     expect(buildOverview(d, "2026-11-10", "2026-11-10").attention).toHaveLength(0);
   });
   it("everything assigned with no clashes is covered", () => {

@@ -41,7 +41,7 @@ export function parseDate(d: string): Date { return new Date(d + "T00:00:00Z"); 
 export function fmtDate(d: Date): string { return d.toISOString().slice(0, 10); }
 export function addDays(d: string, n: number): string { const x = parseDate(d); x.setUTCDate(x.getUTCDate() + n); return fmtDate(x); }
 export function weekday(d: string): number { return parseDate(d).getUTCDay(); }
-export function toMinutes(t: string): number { const [h, m] = t.split(":").map(Number); return h * 60 + (m || 0); }
+export function toMinutes(t: string): number { const [h = 0, m = 0] = t.split(":").map(Number); return h * 60 + m; }
 
 /** All calendar dates in [from, to] on which the activity happens. */
 export function occurrenceDates(a: Activity, from: string, to: string): string[] {
@@ -110,7 +110,7 @@ export function findConflicts(occ: Occurrence[]): { memberId: string; a: Occurre
   for (const o of occ) byDate.set(o.date, [...(byDate.get(o.date) ?? []), o]);
   for (const list of byDate.values()) {
     for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
-      const a = list[i], b = list[j];
+      const a = list[i]!, b = list[j]!;
       if (a.activityId === b.activityId || !overlaps(a.start, a.end, b.start, b.end)) continue;
       const am = new Set([a.dropoff.memberId, a.pickup.memberId].filter(Boolean) as string[]);
       const shared = new Set([b.dropoff.memberId, b.pickup.memberId].filter((m): m is string => !!m && am.has(m)));
