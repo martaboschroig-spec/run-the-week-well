@@ -52,3 +52,5 @@ export function useRefresh() {
   return () => qc.invalidateQueries();
 }
 export const errMsg = (e: unknown) => (e instanceof Error ? e.message : "Something went wrong");
+import { getMessages } from "@/lib/api.functions";
+export const messagesQuery = () => queryOptions({ queryKey: ["messages"], queryFn: () => getMessages(), refetchInterval: 20000 });

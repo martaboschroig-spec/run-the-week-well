@@ -103,6 +103,51 @@ export type Database = {
           },
         ]
       }
+      activity_files: {
+        Row: {
+          activity_id: string
+          created_at: string
+          id: string
+          name: string
+          path: string
+          size: number
+          uploaded_by_member_id: string | null
+        }
+        Insert: {
+          activity_id: string
+          created_at?: string
+          id?: string
+          name: string
+          path: string
+          size?: number
+          uploaded_by_member_id?: string | null
+        }
+        Update: {
+          activity_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          path?: string
+          size?: number
+          uploaded_by_member_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_files_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_files_uploaded_by_member_id_fkey"
+            columns: ["uploaded_by_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       activity_items: {
         Row: {
           activity_id: string
@@ -134,6 +179,58 @@ export type Database = {
             columns: ["activity_id"]
             isOneToOne: false
             referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_notes: {
+        Row: {
+          activity_id: string
+          author_member_id: string
+          body: string
+          created_at: string
+          id: string
+          notify_member_id: string | null
+          read_at: string | null
+        }
+        Insert: {
+          activity_id: string
+          author_member_id: string
+          body: string
+          created_at?: string
+          id?: string
+          notify_member_id?: string | null
+          read_at?: string | null
+        }
+        Update: {
+          activity_id?: string
+          author_member_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          notify_member_id?: string | null
+          read_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_notes_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_notes_author_member_id_fkey"
+            columns: ["author_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_notes_notify_member_id_fkey"
+            columns: ["notify_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
             referencedColumns: ["id"]
           },
         ]
