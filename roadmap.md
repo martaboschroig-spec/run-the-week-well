@@ -12,6 +12,7 @@
 - [ ] Email alerts: needs the family's own sender domain set up, then the templates
 - [ ] Phone alerts (push): needs the alerts service (Firebase) connected
 - [ ] Text alerts (SMS/WhatsApp): needs Twilio connected + a sending number
-- [ ] Pricing page at /pricing, linked from the landing and the app
+- [x] Pricing page at /pricing, linked from the landing
+- [ ] Billing: connect the payment provider, then gate the paid plans
 - [x] No email verification on sign-up: confirm emails off, signup goes straight into the app
 - [x] Passwordless access: magic link by email + Sign in with Google and Apple
