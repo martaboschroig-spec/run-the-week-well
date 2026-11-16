@@ -88,11 +88,10 @@ function SignUpPage() {
               You pay $1.95 today for 7 days of full access. Then your plan renews at $9.99 every 4 weeks until you cancel.
             </p>
             <p className="mt-3 rounded-2xl bg-sun-soft p-3 text-center text-xs font-semibold">Card payments open soon — nothing is charged yet.</p>
-            {signedIn ? (
-              <Link to="/schedule" className="mt-3 block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
-            ) : (
+            {!signedIn && (
               <Button className="mt-3 w-full" variant="outline" onClick={() => setModal(true)}>Create your account first</Button>
             )}
+            <Link to="/schedule" className="mt-3 block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
           </div>
         </div>
         <div className="md:pl-12">
