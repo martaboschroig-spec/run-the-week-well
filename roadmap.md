@@ -20,3 +20,4 @@
 - [x] Passwordless access: magic link by email + Sign in with Google and Apple
 - [x] Sign-up page follows the reference checkout structure
 - [ ] Google Calendar: each grown-up connects their own calendar
+- [x] Try the app without an account (shared demo family, separate from real families)

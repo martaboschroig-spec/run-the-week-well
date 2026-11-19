@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { TryDemoButton } from "@/components/app/TryDemoButton";
 import { CarFront, HandHelping, Backpack, CalendarCheck2, BellRing, Users, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -97,7 +98,7 @@ function LandingPage() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button size="lg" asChild><Link to="/signup">Start your family plan</Link></Button>
-            <Button size="lg" variant="outline" asChild><Link to="/auth">Sign in</Link></Button>
+            <TryDemoButton />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">Free to start. Made for parents, grandparents and carpools.</p>
         </div>

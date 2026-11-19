@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { TryDemoButton } from "@/components/app/TryDemoButton";
 import { MagicLinkAuth } from "@/components/app/MagicLinkAuth";
 
 export const Route = createFileRoute("/auth")({
@@ -35,6 +36,7 @@ function AuthPage() {
           <MagicLinkAuth email={email ?? ""} />
         </div>
       </div>
+      <TryDemoButton className="mt-4 w-full" />
       <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
         New here? Ask whoever runs your household to add your email in Family — then use that email above.
       </p>
