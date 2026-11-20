@@ -11,7 +11,7 @@
 - [x] Alert plumbing: channels + preferences in the database, dispatcher, phone-alert registration, Settings UI
 - [ ] Phone alerts (push): needs the alerts service (Firebase) connected
 - [x] Alerts by email only (WhatsApp and SMS dropped by the user)
-- [ ] Email alerts + "Send invite" email: needs the sender domain set up
+- [ ] Email alerts + "Send invite" email: needs the sender domain set up — parked by the user ("esto ya lo haremos")
 - [x] Invite grown-ups (WhatsApp / email / link) from Family
 - [x] Pricing page at /pricing, linked from the landing
 - [x] Sign-up shows plan picker + account together
