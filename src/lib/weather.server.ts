@@ -1,5 +1,5 @@
 import type { Forecast } from "@/lib/domain/weather";
-const BASE = "https://www.meteosource.com/api/v1/standard";
+const BASE = "https://www.meteosource.com/api/v1/free";
 
 export async function findPlace(text: string, key: string) {
   const r = await fetch(`${BASE}/find_places?text=${encodeURIComponent(text)}&language=en`, { headers: { "X-API-Key": key } });
