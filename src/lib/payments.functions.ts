@@ -50,7 +50,7 @@ export const createTrialCheckout = createServerFn({ method: "POST" })
         return_url: data.returnUrl,
         customer: customerId,
         line_items: [
-          { price_data: { currency: "usd", product: productId, unit_amount: RENEWAL_CENTS, recurring: { interval: "week", interval_count: 4 } }, quantity: 1 },
+          { price_data: { currency: "usd", product: productId, unit_amount: RENEWAL_CENTS, recurring: { interval: "week", interval_count: 4 }, tax_behavior: "inclusive" }, quantity: 1 },
           { price: fee.id, quantity: 1 },
         ],
         subscription_data: { trial_period_days: TRIAL_DAYS, metadata: { userId: context.userId } },
