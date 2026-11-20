@@ -4,6 +4,7 @@ import { Check, Lock, CreditCard, RotateCcw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { SignupModal } from "@/components/app/SignupModal";
 import { TrialCheckout } from "@/components/app/TrialCheckout";
+import { getStripeEnvironment } from "@/lib/stripe";
 import { PaymentTestModeBanner } from "@/components/app/PaymentTestModeBanner";
 
 export const Route = createFileRoute("/signup")({
@@ -36,9 +37,10 @@ function SignUpPage() {
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
       if (!data.session) { setModal(true); return; }
-      // Already part of a family: skip checkout and open the week directly.
-      const { data: fam } = await supabase.from("family_members").select("id").eq("user_id", data.session.user.id).limit(1);
-      if (fam && fam.length > 0) { navigate({ to: "/schedule", replace: true }); return; }
+      // Already paying (trial or active plan): skip checkout and open the week directly.
+      const { data: subs } = await supabase.from("subscriptions").select("id").eq("user_id", data.session.user.id)
+        .eq("environment", getStripeEnvironment()).in("status", ["trialing", "active", "past_due"]).limit(1);
+      if (subs && subs.length > 0) { navigate({ to: "/schedule", replace: true }); return; }
       setUserEmail(data.session.user.email ?? "your account");
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) setUserEmail(s.user.email ?? "your account"); });
