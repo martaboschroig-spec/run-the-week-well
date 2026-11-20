@@ -47,6 +47,7 @@ export const createTrialCheckout = createServerFn({ method: "POST" })
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",
         ui_mode: "embedded_page",
+        locale: "en",
         return_url: data.returnUrl,
         customer: customerId,
         line_items: [
