@@ -1,4 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { TryDemoButton } from "@/components/app/TryDemoButton";
 import { MagicLinkAuth } from "@/components/app/MagicLinkAuth";
 
@@ -21,6 +23,14 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const { email } = Route.useSearch();
+  const navigate = useNavigate();
+  // Returning users go straight to their week — no pricing, no forms.
+  useEffect(() => {
+    const go = () => navigate({ to: "/schedule", replace: true });
+    supabase.auth.getSession().then(({ data }) => { if (data.session) go(); });
+    const { data: sub } = supabase.auth.onAuthStateChange((e, s) => { if (s && e === "SIGNED_IN") go(); });
+    return () => sub.subscription.unsubscribe();
+  }, [navigate]);
   return (
     <div className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-6 py-10">
       <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
@@ -33,7 +43,7 @@ function AuthPage() {
           {email ? "Use the email your family added for you." : "Pick a way in — it takes a second."}
         </p>
         <div className="mt-6">
-          <MagicLinkAuth email={email ?? ""} />
+          <MagicLinkAuth email={email ?? ""} returnTo="/schedule" />
         </div>
       </div>
       <TryDemoButton className="mt-4 w-full" />

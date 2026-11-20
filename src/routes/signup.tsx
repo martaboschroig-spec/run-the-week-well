@@ -38,7 +38,13 @@ function SignUpPage() {
   const [signedIn, setSignedIn] = useState(stepParam === 2);
   const [modal, setModal] = useState(false);
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => { if (data.session) setSignedIn(true); else if (stepParam !== 2) setModal(true); });
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!data.session) { if (stepParam !== 2) setModal(true); return; }
+      // Already part of a family: skip checkout and open the week directly.
+      const { data: fam } = await supabase.from("family_members").select("id").eq("user_id", data.session.user.id).limit(1);
+      if (fam && fam.length > 0) { navigate({ to: "/schedule", replace: true }); return; }
+      setSignedIn(true);
+    });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { if (s) { setSignedIn(true); setModal(false); } });
     // The email link may open in another tab: re-check when this tab regains focus.
     const recheck = () => supabase.auth.getSession().then(({ data }) => { if (data.session) { setSignedIn(true); setModal(false); } });
@@ -46,7 +52,6 @@ function SignUpPage() {
     document.addEventListener("visibilitychange", recheck);
     return () => { sub.subscription.unsubscribe(); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
   }, []);
-  void navigate;
   const included = ["Shared family schedule", "Swaps that never get lost", "Notes & documents", "Alerts by email, push or text"];
   return (
     <div className="min-h-screen">
