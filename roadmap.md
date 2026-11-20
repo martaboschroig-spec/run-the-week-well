@@ -9,9 +9,9 @@
 - [ ] Subscriptions/payments (Stripe or Paddle) — pending, needs user's decision
 - [x] Show the user the app part (Schedule, My Tasks, Family, Notifications) after the landing is done
 - [x] Alert plumbing: channels + preferences in the database, dispatcher, phone-alert registration, Settings UI
-- [ ] Email alerts: needs the family's own sender domain set up, then the templates
 - [ ] Phone alerts (push): needs the alerts service (Firebase) connected
-- [ ] WhatsApp alerts: needs WhatsApp Business connected
+- [x] Alerts by email only (WhatsApp and SMS dropped by the user)
+- [ ] Email alerts + "Send invite" email: needs the sender domain set up
 - [x] Invite grown-ups (WhatsApp / email / link) from Family
 - [x] Pricing page at /pricing, linked from the landing
 - [x] Sign-up shows plan picker + account together

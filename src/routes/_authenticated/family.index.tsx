@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ChevronRight, Copy, Mail, MessageCircle, Pencil, Plus } from "lucide-react";
+import { ChevronRight, Copy, Pencil, Plus } from "lucide-react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -132,13 +132,10 @@ function ChildSheet({ c, onClose }: { c: Partial<Child>; onClose: () => void }) 
 // Invite a grown-up (e.g. Grandma): they open the link, get a sign-in email and land in this family.
 function InviteBox({ name, email }: { name: string; email: string }) {
   const link = `${window.location.origin}/auth?email=${encodeURIComponent(email)}`;
-  const text = `Hi ${name}! I added you to our family plan on RunTheWeek so you can see your drop-offs and pickups. Join here: ${link}`;
   const item = "flex h-12 items-center gap-3 rounded-2xl border bg-card px-4 text-sm font-semibold hover:bg-secondary";
   return (
     <div className="space-y-2 rounded-3xl bg-accent/60 p-4">
       <p className="text-sm font-bold">Invite {name}</p>
-      <a className={item} href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer"><MessageCircle className="h-4 w-4 text-secondary" /> Send on WhatsApp</a>
-      <a className={item} href={`mailto:${email}?subject=${encodeURIComponent("Join our family on RunTheWeek")}&body=${encodeURIComponent(text)}`}><Mail className="h-4 w-4 text-primary" /> Send by email</a>
       <button type="button" className={item + " w-full"} onClick={async () => {
         try { await navigator.clipboard.writeText(link); toast.success("Invite link copied"); } catch { toast.error(link); }
       }}><Copy className="h-4 w-4 text-muted-foreground" /> Copy invite link</button>

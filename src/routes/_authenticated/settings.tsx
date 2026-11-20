@@ -77,7 +77,7 @@ function Settings() {
 
   const saveAlerts = async () => {
     try {
-      await savePrefs({ data: { phone: phone.trim() || null, notifyEmail: email, notifyPush: pushOn, notifySms: smsOn } });
+      await savePrefs({ data: { phone: phone.trim() || null, notifyEmail: email, notifyPush: pushOn, notifySms: false } });
       await refresh();
       toast.success("Saved");
     } catch (e) {
@@ -94,7 +94,7 @@ function Settings() {
         await regTok({ data: { token: r.token } });
         if (!pushOn) {
           setPushOn(true);
-          await savePrefs({ data: { phone: phone.trim() || null, notifyEmail: email, notifyPush: true, notifySms: smsOn } });
+          await savePrefs({ data: { phone: phone.trim() || null, notifyEmail: email, notifyPush: true, notifySms: false } });
         }
         setNotice("Alerts are on for this device.");
         toast.success("Phone alerts are on");
@@ -177,18 +177,6 @@ function Settings() {
           <Switch checked={pushOn} onCheckedChange={(v) => setPushOn(Boolean(v))} />
         </div>
 
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="font-semibold">Text message</p>
-            <p className="text-sm text-muted-foreground">Only for the important ones — it costs per message.</p>
-          </div>
-          <Switch checked={smsOn} onCheckedChange={(v) => setSmsOn(Boolean(v))} />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold">Your phone number</label>
-          <Input className="h-12 rounded-xl text-base" inputMode="tel" placeholder="+1 555 012 3456" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        </div>
 
         <div className="flex flex-wrap items-center gap-3">
           <Button onClick={saveAlerts}>Save</Button>
