@@ -19,11 +19,13 @@ import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authen
 import { Route as AuthenticatedScheduleRouteImport } from './routes/_authenticated/schedule'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
+import { Route as CheckoutReturnRouteImport } from './routes/checkout/return'
 import { Route as AuthenticatedActivitiesIndexRouteImport } from './routes/_authenticated/activities.index'
 import { Route as AuthenticatedActivitiesIdRouteImport } from './routes/_authenticated/activities.$id'
 import { Route as AuthenticatedActivitiesNewRouteImport } from './routes/_authenticated/activities.new'
 import { Route as AuthenticatedFamilyIndexRouteImport } from './routes/_authenticated/family.index'
 import { Route as AuthenticatedFamilyMemberIdRouteImport } from './routes/_authenticated/family.$memberId'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -75,6 +77,11 @@ const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
+  id: '/checkout/return',
+  path: '/checkout/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedActivitiesIndexRoute =
   AuthenticatedActivitiesIndexRouteImport.update({
     id: '/activities/',
@@ -105,6 +112,12 @@ const AuthenticatedFamilyMemberIdRoute =
     path: '/family/$memberId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -116,11 +129,13 @@ export interface FileRoutesByFullPath {
   '/schedule': typeof AuthenticatedScheduleRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/activities/$id': typeof AuthenticatedActivitiesIdRoute
   '/activities/new': typeof AuthenticatedActivitiesNewRoute
   '/family/$memberId': typeof AuthenticatedFamilyMemberIdRoute
   '/activities/': typeof AuthenticatedActivitiesIndexRoute
   '/family/': typeof AuthenticatedFamilyIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -132,11 +147,13 @@ export interface FileRoutesByTo {
   '/schedule': typeof AuthenticatedScheduleRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/activities/$id': typeof AuthenticatedActivitiesIdRoute
   '/activities/new': typeof AuthenticatedActivitiesNewRoute
   '/family/$memberId': typeof AuthenticatedFamilyMemberIdRoute
   '/activities': typeof AuthenticatedActivitiesIndexRoute
   '/family': typeof AuthenticatedFamilyIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -150,11 +167,13 @@ export interface FileRoutesById {
   '/_authenticated/schedule': typeof AuthenticatedScheduleRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/_authenticated/activities/$id': typeof AuthenticatedActivitiesIdRoute
   '/_authenticated/activities/new': typeof AuthenticatedActivitiesNewRoute
   '/_authenticated/family/$memberId': typeof AuthenticatedFamilyMemberIdRoute
   '/_authenticated/activities/': typeof AuthenticatedActivitiesIndexRoute
   '/_authenticated/family/': typeof AuthenticatedFamilyIndexRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -168,11 +187,13 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/settings'
     | '/tasks'
+    | '/checkout/return'
     | '/activities/$id'
     | '/activities/new'
     | '/family/$memberId'
     | '/activities/'
     | '/family/'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -184,11 +205,13 @@ export interface FileRouteTypes {
     | '/schedule'
     | '/settings'
     | '/tasks'
+    | '/checkout/return'
     | '/activities/$id'
     | '/activities/new'
     | '/family/$memberId'
     | '/activities'
     | '/family'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -201,11 +224,13 @@ export interface FileRouteTypes {
     | '/_authenticated/schedule'
     | '/_authenticated/settings'
     | '/_authenticated/tasks'
+    | '/checkout/return'
     | '/_authenticated/activities/$id'
     | '/_authenticated/activities/new'
     | '/_authenticated/family/$memberId'
     | '/_authenticated/activities/'
     | '/_authenticated/family/'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -214,6 +239,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   PricingRoute: typeof PricingRoute
   SignupRoute: typeof SignupRoute
+  CheckoutReturnRoute: typeof CheckoutReturnRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -288,6 +315,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTasksRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/checkout/return': {
+      id: '/checkout/return'
+      path: '/checkout/return'
+      fullPath: '/checkout/return'
+      preLoaderRoute: typeof CheckoutReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/activities/': {
       id: '/_authenticated/activities/'
       path: '/activities'
@@ -322,6 +356,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/family/$memberId'
       preLoaderRoute: typeof AuthenticatedFamilyMemberIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -361,6 +402,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   PricingRoute: PricingRoute,
   SignupRoute: SignupRoute,
+  CheckoutReturnRoute: CheckoutReturnRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

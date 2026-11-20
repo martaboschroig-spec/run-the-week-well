@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { SignupModal } from "@/components/app/SignupModal";
 import { Button } from "@/components/ui/button";
 import { PhoneMock } from "@/components/app/PhoneMock";
+import { TrialCheckout } from "@/components/app/TrialCheckout";
+import { PaymentTestModeBanner } from "@/components/app/PaymentTestModeBanner";
 
 export const Route = createFileRoute("/signup")({
   validateSearch: (search: Record<string, unknown>): { email?: string | undefined; plan?: "family" | "plus" | undefined; step?: 2 | undefined } => ({
@@ -55,6 +57,7 @@ function SignUpPage() {
   const included = ["Shared family schedule", "Swaps that never get lost", "Notes & documents", "Alerts by email, push or text"];
   return (
     <div className="min-h-screen">
+      <PaymentTestModeBanner />
       <SignupModal open={modal} onOpenChange={setModal} email={email} returnTo="/signup" />
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2 text-lg font-extrabold">
@@ -75,24 +78,19 @@ function SignUpPage() {
             <div className="mt-4 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
               <Lock className="h-3.5 w-3.5" /> Secure payment <span className="h-px flex-1 bg-border" />
             </div>
-            <div className="mt-3 grid gap-2.5">
-              <button type="button" disabled className="h-12 rounded-xl bg-foreground text-base font-bold text-background">Apple Pay</button>
-              <button type="button" disabled className="h-12 rounded-xl bg-foreground text-base font-bold text-background">Google Pay</button>
-              <button type="button" disabled className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary text-base font-bold text-primary-foreground">
-                <CreditCard className="h-4 w-4" /> Credit or debit card
-              </button>
-            </div>
-            <div className="mt-4 flex justify-center gap-2 text-[10px] font-extrabold">
-              {["VISA", "MASTERCARD", "AMEX"].map((c) => <span key={c} className="rounded-md border-2 border-border px-2 py-1">{c}</span>)}
-            </div>
-            <div className="mt-5 flex items-baseline justify-between border-t pt-4">
-              <span className="font-bold">Due today</span>
-              <span className="text-3xl font-extrabold tracking-tight">$1.95</span>
-            </div>
-            <p className="mt-3 text-center text-xs text-muted-foreground">
-              You pay $1.95 today for 7 days of full access. Then your plan renews at $9.99 every 4 weeks until you cancel.
-            </p>
-            <p className="mt-3 rounded-2xl bg-sun-soft p-3 text-center text-xs font-semibold">Card payments open soon — nothing is charged yet.</p>
+            {signedIn ? (
+              <div className="mt-3"><TrialCheckout /></div>
+            ) : (
+              <>
+                <div className="mt-5 flex items-baseline justify-between border-t pt-4">
+                  <span className="font-bold">Due today</span>
+                  <span className="text-3xl font-extrabold tracking-tight">$1.95</span>
+                </div>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  You pay $1.95 today for 7 days of full access. Then your plan renews at $9.99 every 4 weeks until you cancel.
+                </p>
+              </>
+            )}
             {!signedIn && (
               <Button className="mt-3 w-full" variant="outline" onClick={() => setModal(true)}>Create your account first</Button>
             )}
