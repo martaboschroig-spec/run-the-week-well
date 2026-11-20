@@ -23,3 +23,6 @@
 - [ ] Google Calendar: each grown-up connects their own calendar
 - [x] Try the app without an account (shared demo family, separate from real families)
 - [x] Users admin: only my account is admin; roles Admin / Support / User
+
+- [x] Stripe checkout: $1.95 for 7 days, then $9.99 every 4 weeks (test mode)
+- [ ] Live payments: user must claim the payment account in the Payments tab
