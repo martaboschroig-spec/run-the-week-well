@@ -19,7 +19,7 @@
 - [ ] Billing: embedded payment form on sign-up (needs payments enabled — waiting for user OK)
 - [x] No email verification on sign-up: confirm emails off, signup goes straight into the app
 - [x] Passwordless access: magic link by email + Sign in with Google and Apple
-- [x] Sign-up page follows the reference checkout structure
+- [x] Sign-up page: account, plan and payment as 3 steps on one page (no pop-up), summary on the right
 - [ ] Google Calendar: each grown-up connects their own calendar
 - [x] Try the app without an account (shared demo family, separate from real families)
 - [x] Users admin: only my account is admin; roles Admin / Support / User
