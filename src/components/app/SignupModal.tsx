@@ -39,7 +39,7 @@ export function SignupModal({ open, onOpenChange, email, returnTo }: Props) {
       <DialogContent className="rounded-3xl sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-extrabold tracking-tight">Create your account</DialogTitle>
-          <DialogDescription>One tap, no passwords. Next: choose your plan and start your 7-day trial for $1.95.</DialogDescription>
+          <DialogDescription>One tap, no passwords. Next: pay and start your 7-day trial.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-3">
           <Button type="button" size="lg" disabled={busy !== null} onClick={() => social("google")}

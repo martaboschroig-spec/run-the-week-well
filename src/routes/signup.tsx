@@ -92,8 +92,7 @@ function SignUpPage() {
                 <p className="text-sm text-muted-foreground">2 adults + all your kids</p>
               </div>
             </div>
-            <div className="mt-5 flex justify-between border-t pt-4 text-sm"><span>Family Trial · 7 days</span><span className="font-semibold">$1.95</span></div>
-            <div className="mt-4 flex items-baseline justify-between border-t pt-4">
+            <div className="mt-5 flex items-baseline justify-between border-t pt-4">
               <span className="text-xl font-extrabold">Due today</span>
               <span className="text-4xl font-extrabold tracking-tight">$1.95</span>
             </div>
