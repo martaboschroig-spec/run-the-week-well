@@ -29,6 +29,13 @@
       "when": 1794595539529,
       "tag": "0003_add_alert_channels",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795184124465,
+      "tag": "0004_household_weather",
+      "breakpoints": true
     }
   ]
 }

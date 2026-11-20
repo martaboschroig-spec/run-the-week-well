@@ -325,19 +325,34 @@ export type Database = {
           created_at: string
           created_by: string
           id: string
+          location_label: string | null
           name: string
+          place_id: string | null
+          units: string
+          weather: Json | null
+          weather_at: string | null
         }
         Insert: {
           created_at?: string
           created_by: string
           id?: string
+          location_label?: string | null
           name?: string
+          place_id?: string | null
+          units?: string
+          weather?: Json | null
+          weather_at?: string | null
         }
         Update: {
           created_at?: string
           created_by?: string
           id?: string
+          location_label?: string | null
           name?: string
+          place_id?: string | null
+          units?: string
+          weather?: Json | null
+          weather_at?: string | null
         }
         Relationships: []
       }

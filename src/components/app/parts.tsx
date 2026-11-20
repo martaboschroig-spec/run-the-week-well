@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { acknowledgeDecline, assignSlot, cancelChange, requestChange, toggleItem } from "@/lib/api.functions";
 import type { getOverview } from "@/lib/api.functions";
 import type { AttentionItem, Occurrence, Slot, Member } from "@/lib/domain/logic";
+import { ActivityWeather } from "@/components/app/Weather";
 import { dayLabel, errMsg, kidChip, kindLabel, time12, useRefresh, verb, who, shortDay } from "@/lib/ui";
 import { cn } from "@/lib/utils";
 
@@ -65,6 +66,7 @@ export function OccurrenceCard({ data, o, showDate }: { data: Data; o: Occurrenc
         </div>
         <Link to="/activities/$id" params={{ id: o.activityId }} aria-label="Edit activity" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-secondary"><Pencil className="h-4 w-4" /></Link>
       </div>
+      <div className="mt-3"><ActivityWeather date={o.date} time={o.start} /></div>
       <div className="mt-4 grid gap-3 border-t pt-4 sm:grid-cols-2">
         <SlotRow data={data} o={o} slot={o.dropoff} />
         <SlotRow data={data} o={o} slot={o.pickup} />

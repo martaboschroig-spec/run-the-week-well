@@ -5,6 +5,7 @@ import { z } from "zod";
 import { AttentionList, CoveredHero, OccurrenceCard, SegTabs, type Data } from "@/components/app/parts";
 import { dayLabel, iso, kidDot, localToday, monthBounds, overviewQuery, shift, startOfWeek, toDate } from "@/lib/ui";
 import { cn } from "@/lib/utils";
+import { DayWeather } from "@/components/app/Weather";
 
 const search = z.object({ view: z.enum(["day", "week", "month"]).optional(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() });
 
@@ -86,7 +87,7 @@ function DayList({ data, from, to }: { data: Data; from: string; to: string }) {
     <div className="space-y-8">
       {groups.map((g) => (
         <section key={g.d}>
-          {from !== to && <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted-foreground">{dayLabel(g.d)}</h2>}
+          <div className="mb-3 flex items-center gap-3">{from !== to && <h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{dayLabel(g.d)}</h2>}<DayWeather date={g.d} /></div>
           <div className="space-y-4">{g.list.map((o) => <OccurrenceCard key={o.key} data={data} o={o} />)}</div>
         </section>
       ))}

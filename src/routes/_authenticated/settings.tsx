@@ -3,7 +3,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { BellRing, Smartphone } from "lucide-react";
+import { BellRing, CloudSun, Smartphone } from "lucide-react";
+import { saveLocation } from "@/lib/weather.functions";
+import { weatherQuery } from "@/components/app/Weather";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -46,6 +48,11 @@ function Settings() {
   const [smsOn, setSmsOn] = useState(false);
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+  const wq = useQuery(weatherQuery());
+  const [town, setTown] = useState("");
+  const [units, setUnits] = useState<"us" | "metric">("us");
+  const saveLoc = useServerFn(saveLocation);
+  useEffect(() => { if (wq.data) { setTown(wq.data.location.label ?? ""); setUnits(wq.data.location.units); } }, [wq.data]);
   const rename = useServerFn(renameHousehold);
   const saveM = useServerFn(saveMember);
   const savePrefs = useServerFn(saveAlertPrefs);
@@ -130,6 +137,22 @@ function Settings() {
           <Button onClick={async () => { try { await saveM({ data: { id: member.id, name, role_label: member.role_label, email: member.email } }); await refresh(); toast.success("Saved"); } catch (e) { toast.error(errMsg(e)); } }}>Save</Button>
         </div>
         <p className="text-sm text-muted-foreground">You're {member.role_label} · {member.email}</p>
+      </section>
+
+      <section className="space-y-3 rounded-3xl border bg-card p-5 shadow-soft">
+        <div className="flex items-center gap-2">
+          <CloudSun className="h-4 w-4 text-primary" />
+          <h2 className="text-sm font-bold uppercase tracking-wide text-muted-foreground">Weather</h2>
+        </div>
+        <label className="text-sm font-semibold">Your town or ZIP</label>
+        <div className="flex flex-wrap gap-2">
+          <Input className="h-12 min-w-0 flex-1 rounded-xl text-base" placeholder="Austin, TX" value={town} onChange={(e) => setTown(e.target.value)} />
+          <select aria-label="Temperature units" className="h-12 rounded-xl border bg-background px-3" value={units} onChange={(e) => setUnits(e.target.value as "us" | "metric")}>
+            <option value="us">°F</option><option value="metric">°C</option>
+          </select>
+          <Button onClick={async () => { try { const r = await saveLoc({ data: { text: town, units } }); if (r.label) setTown(r.label); await qc.invalidateQueries({ queryKey: ["weather"] }); toast.success(r.label ? `Weather for ${r.label}` : "Weather turned off"); } catch (e) { toast.error(errMsg(e)); } }}>Save</Button>
+        </div>
+        <p className="text-sm text-muted-foreground">We'll show the forecast on your schedule for the next 7 days, and a heads-up when rain, heat or cold calls for something extra.</p>
       </section>
 
       <section className="space-y-4 rounded-3xl border bg-card p-5 shadow-soft">
