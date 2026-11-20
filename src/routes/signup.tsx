@@ -101,7 +101,7 @@ function SignUpPage() {
                 <li key={x} className="flex items-start gap-2"><span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground"><Check className="h-3 w-3" strokeWidth={3} /></span>{x}</li>
               ))}
             </ul>
-            <p className="mt-5 border-t pt-4 text-xs leading-relaxed text-muted-foreground">After your 7-day trial, your plan renews automatically at $9.99 every 4 weeks until you cancel. Taxes included. Cancel any time.</p>
+            <p className="mt-5 border-t pt-4 text-xs leading-relaxed text-muted-foreground">After your 7-day trial, your plan renews automatically every 4 weeks until you cancel. Taxes included. Cancel any time.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1"><Lock className="h-3.5 w-3.5" /> Secure checkout</span>
