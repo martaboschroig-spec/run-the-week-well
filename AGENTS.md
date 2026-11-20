@@ -34,3 +34,4 @@ use the editor.
 - Reassignment state changes (request/accept/decline/cancel/acknowledge) happen only in SECURITY DEFINER Postgres functions, so requesting never moves a responsibility.
 - Data access is scoped by household membership (`is_household_member`); a signed-in user is linked to a family member by matching email (`link_me`).
 - Alerts leave the app only through `src/lib/notify.ts`, and every channel there is guarded by its own credentials being present, so a provider that isn't connected can never break the in-app action that triggered the alert.
+- App-wide roles (admin/support/user) live in `user_roles`; changes only via SECURITY DEFINER `set_user_role`, which never grants admin, so admin can only be set directly in the database.

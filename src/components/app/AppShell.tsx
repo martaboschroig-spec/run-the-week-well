@@ -1,9 +1,11 @@
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Bell, CalendarDays, CheckSquare, ListChecks, Users, Plus, Settings } from "lucide-react";
+import { Bell, CalendarDays, CheckSquare, ListChecks, Users, Plus, Settings, ShieldCheck } from "lucide-react";
 import { meQuery, notificationsQuery, messagesQuery } from "@/lib/ui";
 import { Onboarding } from "./Onboarding";
 import { cn } from "@/lib/utils";
+import { useServerFn } from "@tanstack/react-start";
+import { myRoles } from "@/lib/admin.functions";
 
 const NAV = [
   { to: "/schedule", label: "Schedule", icon: CalendarDays },
@@ -38,6 +40,9 @@ function BellLink() {
 export function AppShell() {
   const me = useQuery(meQuery());
   const { pathname } = useLocation();
+  const rolesFn = useServerFn(myRoles);
+  const roles = useQuery({ queryKey: ["my-roles"], queryFn: () => rolesFn() });
+  const staff = (roles.data ?? []).some((r) => r === "admin" || r === "support");
   if (me.isLoading) return <div className="grid min-h-screen place-items-center text-muted-foreground">Loading your week…</div>;
   if (me.error) return <div className="grid min-h-screen place-items-center px-6 text-center text-muted-foreground">We couldn't load your family. Please refresh.</div>;
   if (!me.data) return <Onboarding />;
@@ -58,6 +63,11 @@ export function AppShell() {
           <Bell className="h-5 w-5" /> Notifications
         </Link>
         <div className="mt-auto">
+          {staff && (
+            <Link to="/admin" className={cn("flex h-11 items-center gap-3 rounded-xl px-3 font-medium text-muted-foreground hover:bg-secondary", pathname.startsWith("/admin") && "bg-accent text-accent-foreground")}>
+              <ShieldCheck className="h-5 w-5" /> Users & roles
+            </Link>
+          )}
           <Link to="/settings" className="flex h-11 items-center gap-3 rounded-xl px-3 font-medium text-muted-foreground hover:bg-secondary">
             <Settings className="h-5 w-5" /> Settings
           </Link>
@@ -69,6 +79,7 @@ export function AppShell() {
           <Logo />
           <div className="flex items-center">
             <BellLink />
+            {staff && <Link to="/admin" aria-label="Users & roles" className="grid h-11 w-11 place-items-center rounded-full hover:bg-secondary"><ShieldCheck className="h-5 w-5" /></Link>}
             <Link to="/settings" aria-label="Settings" className="grid h-11 w-11 place-items-center rounded-full hover:bg-secondary"><Settings className="h-5 w-5" /></Link>
           </div>
         </header>

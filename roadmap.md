@@ -21,3 +21,4 @@
 - [x] Sign-up page follows the reference checkout structure
 - [ ] Google Calendar: each grown-up connects their own calendar
 - [x] Try the app without an account (shared demo family, separate from real families)
+- [x] Users admin: only my account is admin; roles Admin / Support / User
