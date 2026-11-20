@@ -26,3 +26,4 @@
 
 - [x] Stripe checkout: $1.95 for 7 days, then $9.99 every 4 weeks (test mode)
 - [ ] Live payments: user must claim the payment account in the Payments tab
+- [ ] Payment page layout: balance the two columns (left card leaves a big empty gap), stop the phone preview being cut off, drop the duplicated price
