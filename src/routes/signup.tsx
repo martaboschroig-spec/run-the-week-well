@@ -54,7 +54,7 @@ function SignUpPage() {
     document.addEventListener("visibilitychange", recheck);
     return () => { sub.subscription.unsubscribe(); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
   }, []);
-  const included = ["Shared family schedule", "Swaps that never get lost", "Notes & documents", "Alerts by email, push or text"];
+  const included = ["Shared family schedule", "Swaps that never get lost", "Notes & documents", "Alerts by email and push"];
   return (
     <div className="min-h-screen">
       <PaymentTestModeBanner />
@@ -71,8 +71,8 @@ function SignUpPage() {
         Your family's data stays private — only your household can see it
       </div>
       <h1 className="mt-10 px-6 text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Start your family's week</h1>
-      <div className="mx-auto mt-8 grid max-w-6xl gap-10 px-6 pb-12 md:grid-cols-2 md:gap-0">
-        <div className="md:border-r md:pr-12">
+      <div className="mx-auto mt-8 grid max-w-6xl gap-10 px-6 pb-12 sm:px-8 md:grid-cols-2 md:gap-0">
+        <div className="md:border-r md:pr-10 lg:pr-12"><div className="md:sticky md:top-6">
           <div className="rounded-3xl border bg-card p-6 shadow-soft sm:p-8">
             <h2 className="text-2xl font-extrabold tracking-tight">Start your trial</h2>
             <div className="mt-4 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
@@ -96,8 +96,8 @@ function SignUpPage() {
             )}
             <Link to="/schedule" className="mt-3 block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
           </div>
-        </div>
-        <div className="md:pl-12">
+        </div></div>
+        <div className="md:pl-10 lg:pl-12">
           <div className="flex items-center gap-4 rounded-3xl border-2 border-border bg-card p-5 shadow-soft">
             <span className="grid h-16 w-16 shrink-0 rotate-[-6deg] place-items-center rounded-2xl bg-primary text-2xl font-extrabold text-primary-foreground">R</span>
             <div>
