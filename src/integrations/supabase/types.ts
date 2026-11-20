@@ -557,6 +557,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_demo_household: { Args: { _household: string }; Returns: boolean }
       is_household_member: { Args: { _household: string }; Returns: boolean }
       link_me: { Args: never; Returns: string }
       request_change: {
