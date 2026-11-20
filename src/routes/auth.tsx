@@ -48,10 +48,10 @@ function AuthPage() {
       </div>
       <TryDemoButton className="mt-4 w-full" />
       <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
-        New here? Ask whoever runs your household to add your email in Family — then use that email above.
+        Invited by your family? Use the email they added for you above.
       </p>
       <p className="mt-3 text-center text-sm">
-        <Link to="/pricing" className="font-semibold text-primary">See pricing</Link>
+        New here? <Link to="/signup" className="font-semibold text-primary">Start your family's trial</Link>
       </p>
     </div>
   );

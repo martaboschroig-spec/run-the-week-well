@@ -100,7 +100,7 @@ function LandingPage() {
             <Button size="lg" asChild><Link to="/signup">Start your family plan</Link></Button>
             <TryDemoButton />
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">Free to start. Made for parents, grandparents and carpools.</p>
+          <p className="mt-4 text-sm text-muted-foreground">$1.95 for your first 7 days. Made for parents, grandparents and carpools.</p>
         </div>
         <MockCard />
       </section>
@@ -144,7 +144,7 @@ function LandingPage() {
         <p className="mx-auto mt-2 max-w-md text-primary-foreground/80">
           Set up your family's activities today and see exactly what's covered — and what still needs someone.
         </p>
-        <Button size="lg" variant="secondary" className="mt-6" asChild><Link to="/signup">Get started free</Link></Button>
+        <Button size="lg" variant="secondary" className="mt-6" asChild><Link to="/signup">Start your 7-day trial</Link></Button>
       </section>
 
       <footer className="flex items-center gap-2 border-t py-6 text-sm text-muted-foreground">

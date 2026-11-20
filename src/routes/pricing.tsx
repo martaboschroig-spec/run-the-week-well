@@ -105,7 +105,7 @@ function PricingPage() {
               variant={p.highlight ? "default" : "outline"}
               asChild
             >
-              {signedIn ? <Link to="/schedule">{p.cta}</Link> : <Link to="/signup" search={{ plan: p.id === "plus" ? "plus" : "family" }}>{p.cta}</Link>}
+              <Link to="/signup" search={{ plan: p.id === "plus" ? "plus" : "family" }}>{p.cta}</Link>
             </Button>
           </div>
         ))}
@@ -143,7 +143,7 @@ function PricingPage() {
           Add Tuesday's activities and see who's covering what — 7 days for $1.95.
         </p>
         <Button size="lg" className="mt-6 rounded-full font-bold" asChild>
-          <Link to={signedIn ? "/schedule" : "/signup"}>{signedIn ? "Open my week" : "Start for $1.95"}</Link>
+          <Link to="/signup">{signedIn ? "Open my week" : "Start for $1.95"}</Link>
         </Button>
       </section>
 
