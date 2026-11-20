@@ -21,7 +21,7 @@ export const getWeather = createServerFn({ method: "GET" }).middleware([requireS
   const location = { label: (h.location_label as string | null) ?? null, units: (h.units === "metric" ? "metric" : "us") as "us" | "metric" };
   if (!h.place_id) return { location, forecast: null as Forecast | null };
   if (h.weather && h.weather_at && Date.now() - new Date(h.weather_at).getTime() < HOUR) return { location, forecast: h.weather as Forecast };
-  const key = process.env["METEOSOURCE_API_KEY"];
+  const key = process.env["METEOSOURCE_API_KEY"]?.trim();
   if (!key) return { location, forecast: (h.weather as Forecast | null) ?? null };
   try {
     const f = await fetchForecast(h.place_id, h.location_label ?? "", location.units, key);
@@ -42,7 +42,7 @@ export const saveLocation = createServerFn({ method: "POST" }).middleware([requi
       await ctx.supabase.from("households").update({ location_label: null, place_id: null, weather: null, weather_at: null, units: data.units }).eq("id", h.id);
       return { label: null };
     }
-    const key = process.env["METEOSOURCE_API_KEY"];
+    const key = process.env["METEOSOURCE_API_KEY"]?.trim();
     if (!key) throw new Error("The weather service isn't connected yet");
     const p = await findPlace(data.text, key);
     if (!p) throw new Error("We couldn't find that place — try a town name");
