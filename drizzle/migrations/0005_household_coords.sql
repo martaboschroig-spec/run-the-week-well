@@ -1,0 +1,1 @@
+ALTER TABLE public.households ADD COLUMN lat numeric, ADD COLUMN lon numeric;

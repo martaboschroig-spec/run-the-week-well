@@ -5,7 +5,7 @@ import { z } from "zod";
 import { AttentionList, CoveredHero, OccurrenceCard, SegTabs, type Data } from "@/components/app/parts";
 import { dayLabel, iso, kidDot, localToday, monthBounds, overviewQuery, shift, startOfWeek, toDate } from "@/lib/ui";
 import { cn } from "@/lib/utils";
-import { DayWeather } from "@/components/app/Weather";
+import { DayWeather, WeatherStrip } from "@/components/app/Weather";
 
 const search = z.object({ view: z.enum(["day", "week", "month"]).optional(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() });
 
@@ -53,6 +53,7 @@ function Schedule() {
         <h1 className="text-3xl font-extrabold tracking-tight">{title}</h1>
         {q.data && <Stats data={q.data} view={view} />}
       </div>
+      <WeatherStrip />
       {q.isLoading && <p className="text-muted-foreground">Loading…</p>}
       {q.error && <p className="text-attention">We couldn't load the schedule. Please refresh.</p>}
       {q.data && (

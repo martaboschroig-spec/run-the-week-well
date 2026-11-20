@@ -36,6 +36,13 @@
       "when": 1795184124465,
       "tag": "0004_household_weather",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795184711765,
+      "tag": "0005_household_coords",
+      "breakpoints": true
     }
   ]
 }

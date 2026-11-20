@@ -325,7 +325,9 @@ export type Database = {
           created_at: string
           created_by: string
           id: string
+          lat: number | null
           location_label: string | null
+          lon: number | null
           name: string
           place_id: string | null
           units: string
@@ -336,7 +338,9 @@ export type Database = {
           created_at?: string
           created_by: string
           id?: string
+          lat?: number | null
           location_label?: string | null
+          lon?: number | null
           name?: string
           place_id?: string | null
           units?: string
@@ -347,7 +351,9 @@ export type Database = {
           created_at?: string
           created_by?: string
           id?: string
+          lat?: number | null
           location_label?: string | null
+          lon?: number | null
           name?: string
           place_id?: string | null
           units?: string
