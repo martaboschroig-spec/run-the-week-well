@@ -11,7 +11,8 @@
 - [x] Alert plumbing: channels + preferences in the database, dispatcher, phone-alert registration, Settings UI
 - [ ] Email alerts: needs the family's own sender domain set up, then the templates
 - [ ] Phone alerts (push): needs the alerts service (Firebase) connected
-- [ ] Text alerts (SMS/WhatsApp): needs Twilio connected + a sending number
+- [ ] WhatsApp alerts: needs WhatsApp Business connected
+- [x] Invite grown-ups (WhatsApp / email / link) from Family
 - [x] Pricing page at /pricing, linked from the landing
 - [x] Sign-up shows plan picker + account together
 - [x] Sign-up in 2 steps: account, then payment (visual)

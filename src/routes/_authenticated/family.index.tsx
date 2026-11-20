@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ChevronRight, Copy, Pencil, Plus } from "lucide-react";
+import { ChevronRight, Copy, Mail, MessageCircle, Pencil, Plus } from "lucide-react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,20 +89,7 @@ function MemberSheet({ m, isMe, onClose }: { m: Partial<Member>; isMe: boolean; 
           </div>
           <Input className="h-12 rounded-xl text-base" type="email" placeholder="Email (so they can sign in)" value={f.email} disabled={isMe} onChange={(e) => setF({ ...f, email: e.target.value })} />
           <p className="text-sm text-muted-foreground">When they create an account with this email, they'll see their tasks and requests.</p>
-          {m.id && !isMe && !m.user_id && f.email.trim() && (
-            <button
-              type="button"
-              className="flex w-full items-center justify-between gap-3 rounded-2xl border bg-secondary/50 px-4 py-3 text-left text-sm font-semibold hover:bg-secondary"
-              onClick={async () => {
-                const link = `${window.location.origin}/signup?email=${encodeURIComponent(f.email.trim())}`;
-                try { await navigator.clipboard.writeText(link); toast.success("Join link copied — send it to them"); }
-                catch { toast.error(link); }
-              }}
-            >
-              <span>Copy join link for {f.name || "them"}</span>
-              <Copy className="h-4 w-4 text-muted-foreground" />
-            </button>
-          )}
+          {m.id && !isMe && !m.user_id && f.email.trim() && <InviteBox name={f.name || "them"} email={f.email.trim()} />}
           <Button size="lg" className="w-full" onClick={async () => {
             try { await save({ data: { id: m.id, name: f.name, role_label: f.role_label, email: f.email.trim() || null } }); await refresh(); onClose(); } catch (e) { toast.error(errMsg(e)); }
           }}>Save</Button>
@@ -139,5 +126,23 @@ function ChildSheet({ c, onClose }: { c: Partial<Child>; onClose: () => void }) 
         </div>
       </DrawerContent>
     </Drawer>
+  );
+}
+
+// Invite a grown-up (e.g. Grandma): they open the link, get a sign-in email and land in this family.
+function InviteBox({ name, email }: { name: string; email: string }) {
+  const link = `${window.location.origin}/auth?email=${encodeURIComponent(email)}`;
+  const text = `Hi ${name}! I added you to our family plan on RunTheWeek so you can see your drop-offs and pickups. Join here: ${link}`;
+  const item = "flex h-12 items-center gap-3 rounded-2xl border bg-card px-4 text-sm font-semibold hover:bg-secondary";
+  return (
+    <div className="space-y-2 rounded-3xl bg-accent/60 p-4">
+      <p className="text-sm font-bold">Invite {name}</p>
+      <a className={item} href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer"><MessageCircle className="h-4 w-4 text-secondary" /> Send on WhatsApp</a>
+      <a className={item} href={`mailto:${email}?subject=${encodeURIComponent("Join our family on RunTheWeek")}&body=${encodeURIComponent(text)}`}><Mail className="h-4 w-4 text-primary" /> Send by email</a>
+      <button type="button" className={item + " w-full"} onClick={async () => {
+        try { await navigator.clipboard.writeText(link); toast.success("Invite link copied"); } catch { toast.error(link); }
+      }}><Copy className="h-4 w-4 text-muted-foreground" /> Copy invite link</button>
+      <p className="text-xs text-muted-foreground">Save first. They join free — no payment needed.</p>
+    </div>
   );
 }
