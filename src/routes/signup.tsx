@@ -1,10 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Check, Lock, CreditCard, ShieldCheck, RotateCcw } from "lucide-react";
+import { Check, Lock, CreditCard, RotateCcw } from "lucide-react";
 import type { ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AccountAuth } from "@/components/app/AccountAuth";
-import { PhoneMock } from "@/components/app/PhoneMock";
 import { TrialCheckout } from "@/components/app/TrialCheckout";
 import { PaymentTestModeBanner } from "@/components/app/PaymentTestModeBanner";
 
@@ -75,12 +74,7 @@ function SignUpPage() {
         </Link>
         <Link to="/auth" className="text-sm font-semibold text-primary">I already have an account</Link>
       </header>
-      <div className="bg-accent py-2.5 text-center text-sm font-semibold">
-        <ShieldCheck className="mr-1.5 inline h-4 w-4 text-secondary" />
-        Your family's data stays private — only your household can see it
-      </div>
       <h1 className="mt-10 px-6 text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Start your family's week</h1>
-      <p className="mt-2 px-6 text-center text-muted-foreground">Three quick steps: your account, your plan, your payment.</p>
       <div className="mx-auto mt-8 grid max-w-6xl items-start gap-8 px-6 pb-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-12">
         <div className="grid gap-5">
           <Step n={1} title={signedIn ? "Account ready" : "Create your account"} done={signedIn} active={!signedIn}>
@@ -93,17 +87,7 @@ function SignUpPage() {
               </>
             )}
           </Step>
-          <Step n={2} title="Your plan" done={signedIn} active={false}>
-            <div className="flex items-center gap-4 rounded-2xl border-2 border-primary bg-accent/40 p-4">
-              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full border-[6px] border-primary bg-card" aria-hidden="true" />
-              <div className="min-w-0 flex-1">
-                <p className="font-extrabold">Family Trial</p>
-                <p className="text-sm text-muted-foreground">$1.95 for 7 days, then $9.99 every 4 weeks · cancel any time</p>
-              </div>
-              <span className="text-2xl font-extrabold tracking-tight">$1.95</span>
-            </div>
-          </Step>
-          <Step n={3} title="Payment" active={signedIn}>
+          <Step n={2} title="Payment" active={signedIn}>
             <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
               <Lock className="h-3.5 w-3.5" /> Secure payment <span className="h-px flex-1 bg-border" />
             </div>
@@ -146,76 +130,6 @@ function SignUpPage() {
             <span className="flex items-center gap-1"><RotateCcw className="h-3.5 w-3.5" /> Cancel any time</span>
           </div>
         </aside>
-      </div>
-      <section className="mx-auto max-w-6xl px-6 pb-12">
-        <div className="rounded-3xl border-2 border-border bg-card p-6 shadow-soft">
-          <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-secondary">What you get</p>
-              <h2 className="mt-2 text-2xl font-extrabold tracking-tight">A peek at Friday</h2>
-              <p className="mt-2 max-w-md text-muted-foreground">Who drops off, who picks up, what to bring — and the one pickup that still needs someone, flagged before it's a problem.</p>
-            </div>
-            <div className="mx-auto w-full max-w-[300px]">
-          <PhoneMock className="-rotate-1">
-            <div className="flex h-[470px] flex-col">
-              <div className="flex items-center justify-between pb-2 pt-1">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">Friday</p>
-                  <p className="text-sm font-extrabold tracking-tight">Your week</p>
-                </div>
-                <span className="grid h-6 w-6 place-items-center rounded-full bg-primary text-[10px] font-extrabold text-primary-foreground">1</span>
-              </div>
-              <p className="mb-2 rounded-full bg-attention-soft px-2.5 py-1 text-[10px] font-bold text-attention">1 pickup still needs someone</p>
-              <ul className="grid gap-1.5">
-                {[
-                  { kid: "Emma", what: "Soccer 5:00", who: "Mom drops off · Dad picks up", tone: "bg-kid-coral text-kid-coral-ink", state: "Covered", stateTone: "bg-covered-soft text-covered" },
-                  { kid: "Leo", what: "Karate 5:15", who: "Grandma drops off · pickup?", tone: "bg-kid-blue text-kid-blue-ink", state: "Needs someone", stateTone: "bg-attention-soft text-attention" },
-                  { kid: "Sophie", what: "Doctor 7:00", who: "Dad asked Mom to swap", tone: "bg-kid-sage text-kid-sage-ink", state: "Waiting", stateTone: "bg-waiting-soft text-waiting" },
-                ].map((r) => (
-                  <li key={r.kid} className="rounded-2xl bg-muted p-2">
-                    <div className="flex items-center gap-2">
-                      <span className={"grid h-7 w-7 shrink-0 place-items-center rounded-full text-[11px] font-extrabold " + r.tone}>{r.kid[0]}</span>
-                      <p className="min-w-0 flex-1 truncate text-xs font-bold leading-tight">{r.kid} · {r.what}</p>
-                      <span className={"shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-bold " + r.stateTone}>{r.state}</span>
-                    </div>
-                    <p className="mt-1 pl-9 text-[10px] leading-tight text-muted-foreground">{r.who}</p>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-2 rounded-2xl border border-dashed border-border p-2">
-                <p className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Bring for Doctor</p>
-                <p className="mt-0.5 text-[10px] font-semibold">Analysis forms · water bottle · insurance card</p>
-              </div>
-              <div className="mt-2 flex items-start gap-2 rounded-2xl bg-accent p-2">
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-[9px] font-extrabold text-primary-foreground">D</span>
-                <div className="min-w-0">
-                  <p className="text-[10px] font-bold leading-tight">New note from Dad</p>
-                  <p className="truncate text-[10px] leading-tight text-muted-foreground">Teacher meeting moved to Thursday 4pm</p>
-                </div>
-              </div>
-              <div className="mt-2 rounded-2xl bg-muted/70 p-2">
-                <p className="text-[9px] font-bold uppercase tracking-wide text-muted-foreground">Next up</p>
-                <p className="mt-0.5 text-[10px] font-semibold">Sat · Swim 9:00 · Dad drops off</p>
-              </div>
-              <div className="flex-1" />
-              <div aria-hidden="true" className="flex items-center justify-around rounded-2xl bg-muted px-2 py-1.5 text-[10px] font-bold">
-                <span className="text-primary">Schedule</span>
-                <span className="text-muted-foreground">Tasks</span>
-                <span className="text-muted-foreground">Family</span>
-              </div>
-            </div>
-          </PhoneMock>
-            </div>
-          </div>
-        </div>
-      </section>
-      <div className="mx-auto mb-12 flex w-fit items-center gap-3 rounded-full border-2 border-border bg-card px-5 py-2.5 shadow-soft">
-        <div className="flex -space-x-2">
-          {["bg-kid-coral text-kid-coral-ink", "bg-kid-blue text-kid-blue-ink", "bg-kid-sage text-kid-sage-ink"].map((c, i) => (
-            <span key={c} className={"grid h-8 w-8 place-items-center rounded-full border-2 border-card text-xs font-extrabold " + c}>{"MJA"[i]}</span>
-          ))}
-        </div>
-        <p className="text-sm"><span className="font-bold">Families</span> plan their week here every day</p>
       </div>
     </div>
   );
