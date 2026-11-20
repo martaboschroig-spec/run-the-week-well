@@ -35,7 +35,7 @@ const PLANS = [
       "Clash and gap warnings",
       "Gear checklists per activity",
       "Notes and documents per activity",
-      "Alerts by email, push or text",
+      "Alerts by email and push",
     ],
     cta: "Choose Family",
     highlight: true,

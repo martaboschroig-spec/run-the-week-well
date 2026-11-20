@@ -99,7 +99,7 @@ export async function deliver(ctx: Ctx, memberId: string, alert: Alert) {
     const m = found.data as any;
     if (!m) return;
     if (m.notify_push) await sendPush(ctx, memberId, alert);
-    if (m.notify_sms && m.phone) await sendText(String(m.phone), alert);
+    // Text messages were dropped by the user: alerts go by email and push only.
     if (m.notify_email && m.email) {
       // sender domain not configured yet — nothing to send through
     }
