@@ -92,10 +92,6 @@ function SignUpPage() {
                 <p className="text-sm text-muted-foreground">2 adults + all your kids</p>
               </div>
             </div>
-            <div className="mt-5 flex items-baseline justify-between border-t pt-4">
-              <span className="text-xl font-extrabold">Due today</span>
-              <span className="text-4xl font-extrabold tracking-tight">$1.95</span>
-            </div>
             <ul className="mt-5 grid gap-2.5 border-t pt-4 text-sm font-semibold sm:grid-cols-2">
               {included.map((x) => (
                 <li key={x} className="flex items-start gap-2"><span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground"><Check className="h-3 w-3" strokeWidth={3} /></span>{x}</li>
