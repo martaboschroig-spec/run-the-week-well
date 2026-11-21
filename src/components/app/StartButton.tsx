@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 const SignupModal = lazy(() => import("@/components/app/SignupModal").then((module) => ({ default: module.SignupModal })));
 
-export function StartButton({ children, variant = "cta", ...props }: ComponentProps<typeof Button>) {
+export function StartButton({ children, ...props }: ComponentProps<typeof Button>) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -23,7 +23,7 @@ export function StartButton({ children, variant = "cta", ...props }: ComponentPr
   }
   return (
     <>
-      <Button {...props} variant={variant} onClick={start}>{children}</Button>
+      <Button {...props} onClick={start}>{children}</Button>
       {open && <Suspense fallback={null}><SignupModal open={open} onOpenChange={setOpen} returnTo="/signup" /></Suspense>}
     </>
   );

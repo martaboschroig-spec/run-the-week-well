@@ -69,9 +69,6 @@
   --color-waiting-soft: var(--waiting-soft);
   --color-attention: var(--attention);
   --color-attention-soft: var(--attention-soft);
-  --color-cta: var(--cta);
-  --color-cta-foreground: var(--cta-foreground);
-  --color-cta-soft: var(--cta-soft);
   --color-kid-lavender: var(--kid-lavender);
   --color-kid-lavender-ink: var(--kid-lavender-ink);
   --color-kid-blue: var(--kid-blue);
@@ -121,10 +118,6 @@
   --waiting-soft: oklch(0.965 0.04 85);
   --attention: oklch(0.6 0.12 28);
   --attention-soft: oklch(0.96 0.025 28);
-  /* Main call-to-action: green, so it reads as "go" against the coral brand */
-  --cta: oklch(0.55 0.15 150);
-  --cta-foreground: oklch(1 0 0);
-  --cta-soft: oklch(0.955 0.04 150);
   --kid-lavender: oklch(0.93 0.035 300);
   --kid-lavender-ink: oklch(0.45 0.08 300);
   --kid-blue: oklch(0.93 0.035 240);
@@ -198,18 +191,4 @@
 @theme inline {
   --color-sun: var(--sun);
   --color-sun-soft: var(--sun-soft);
-}
-
-/* Blue accent for the pricing page, layered over the playful cream base */
-.theme-blue {
-  --primary: oklch(0.53 0.16 255);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.45 0.13 258);
-  --secondary-foreground: oklch(0.99 0.004 80);
-  --accent: oklch(0.945 0.035 250);
-  --accent-foreground: oklch(0.33 0.09 255);
-  --ring: oklch(0.53 0.16 255);
-  --sun: oklch(0.86 0.09 240);
-  --sun-soft: oklch(0.95 0.04 245);
-  --border: oklch(0.91 0.025 250);
 }

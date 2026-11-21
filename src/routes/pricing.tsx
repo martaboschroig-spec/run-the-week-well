@@ -46,7 +46,7 @@ const PLANS = [
 function PricingPage() {
   const { signedIn } = Route.useLoaderData();
   return (
-    <div className="theme-playful theme-blue min-h-screen">
+    <div className="theme-playful min-h-screen">
     <div className="mx-auto max-w-5xl px-6">
       <header className="flex flex-wrap items-center gap-2 py-5">
         <Link to="/" className="flex items-center gap-2 font-extrabold sm:text-lg"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">R</span>RunTheWeek</Link>
@@ -93,7 +93,7 @@ function PricingPage() {
             <StartButton
               size="lg"
               className="mt-6 w-full rounded-full font-bold"
-              variant="cta"
+              variant={p.highlight ? "default" : "outline"}
             >
               {p.cta}
             </StartButton>
@@ -133,7 +133,7 @@ function PricingPage() {
         <p className="mx-auto mt-2 max-w-md text-secondary-foreground/90">
           Add Tuesday's activities and see who's covering what.
         </p>
-        {signedIn ? <Button size="lg" className="mt-6" variant="cta" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton size="lg" className="mt-6">Start your 7-day trial</StartButton>}
+        {signedIn ? <Button size="lg" className="mt-6" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton size="lg" className="mt-6">Start your 7-day trial</StartButton>}
       </section>
 
       <footer className="flex flex-wrap items-center gap-2 border-t py-6 text-sm text-muted-foreground">
