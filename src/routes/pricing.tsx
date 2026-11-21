@@ -46,7 +46,7 @@ const PLANS = [
 function PricingPage() {
   const { signedIn } = Route.useLoaderData();
   return (
-    <div className="theme-playful min-h-screen">
+    <div className="theme-playful theme-blue min-h-screen">
     <div className="mx-auto max-w-5xl px-6">
       <header className="flex flex-wrap items-center gap-2 py-5">
         <Link to="/" className="flex items-center gap-2 font-extrabold sm:text-lg"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">R</span>RunTheWeek</Link>

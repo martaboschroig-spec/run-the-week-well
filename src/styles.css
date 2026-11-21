@@ -192,3 +192,17 @@
   --color-sun: var(--sun);
   --color-sun-soft: var(--sun-soft);
 }
+
+/* Blue accent for the pricing page, layered over the playful cream base */
+.theme-blue {
+  --primary: oklch(0.53 0.16 255);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.45 0.13 258);
+  --secondary-foreground: oklch(0.99 0.004 80);
+  --accent: oklch(0.945 0.035 250);
+  --accent-foreground: oklch(0.33 0.09 255);
+  --ring: oklch(0.53 0.16 255);
+  --sun: oklch(0.86 0.09 240);
+  --sun-soft: oklch(0.95 0.04 245);
+  --border: oklch(0.91 0.025 250);
+}
