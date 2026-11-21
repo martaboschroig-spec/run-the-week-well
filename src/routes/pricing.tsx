@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Users, HeartHandshake, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { StartButton } from "@/components/app/StartButton";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -37,7 +38,7 @@ const PLANS = [
       "Notes and documents per activity",
       "Alerts by email and push",
     ],
-    cta: "Choose Family",
+    cta: "Start your 7-day trial",
     highlight: true,
   },
 ];
@@ -56,7 +57,7 @@ function PricingPage() {
           ) : (
             <>
               <Button variant="ghost" asChild><Link to="/auth">Sign in</Link></Button>
-              <Button asChild><Link to="/signup">Get started</Link></Button>
+              <StartButton>Start your trial</StartButton>
             </>
           )}
         </nav>
@@ -68,7 +69,7 @@ function PricingPage() {
         <span className="relative inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold">Try Family for 7 days</span>
         <h1 className="relative mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl">Pricing that covers <span className="text-primary">the whole family</span></h1>
         <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
-          One plan per household, not per person. Try Family for 7 days, then pick what fits.
+          One plan per household, not per person. Your activities, rides and packing lists — together.
         </p>
       </section>
 
@@ -82,11 +83,6 @@ function PricingPage() {
                 : "flex flex-col rounded-[2rem] border-2 border-border bg-card p-7 shadow-soft"
             }
           >
-            {p.highlight && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 -rotate-2 whitespace-nowrap rounded-full bg-sun px-4 py-1 text-xs font-extrabold text-foreground ">
-                Most families pick this
-              </span>
-            )}
             <p className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{p.name}</p>
             <p className={"mt-3 text-5xl font-extrabold tracking-tight " + (p.highlight ? "text-primary" : "")}>{p.price}</p>
             <p className="text-sm text-muted-foreground">{p.per}</p>
@@ -99,14 +95,14 @@ function PricingPage() {
                 </li>
               ))}
             </ul>
-            <Button
+            <StartButton
               size="lg"
               className="mt-6 w-full rounded-full font-bold"
               variant={p.highlight ? "default" : "outline"}
-              asChild
             >
-              <Link to="/signup" search={{ plan: p.id === "plus" ? "plus" : "family" }}>{p.cta}</Link>
-            </Button>
+              {p.cta}
+            </StartButton>
+            <p className="mt-3 text-center text-xs text-muted-foreground">Taxes included. Renews automatically. Cancel any time.</p>
           </div>
         ))}
       </section>
@@ -142,15 +138,13 @@ function PricingPage() {
         <p className="mx-auto mt-2 max-w-md text-secondary-foreground/90">
           Add Tuesday's activities and see who's covering what.
         </p>
-        <Button size="lg" className="mt-6 rounded-full font-bold" asChild>
-          <Link to="/signup">{signedIn ? "Open my week" : "Start your trial"}</Link>
-        </Button>
+        {signedIn ? <Button size="lg" className="mt-6" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton size="lg" className="mt-6">Start your 7-day trial</StartButton>}
       </section>
 
       <footer className="flex flex-wrap items-center gap-2 border-t py-6 text-sm text-muted-foreground">
         <Users className="h-4 w-4" />
         RunTheWeek — made for busy families.
-        <span className="ml-auto">Billing opens soon. Everything is free to use until then.</span>
+        <Link to="/" className="ml-auto font-semibold text-primary">Back to RunTheWeek</Link>
       </footer>
     </div>
     </div>

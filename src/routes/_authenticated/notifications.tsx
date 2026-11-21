@@ -19,6 +19,8 @@ export const Route = createFileRoute("/_authenticated/notifications")({
       { name: "description", content: "Requests for help and answers from your family." },
       { property: "og:title", content: "Notifications — RunTheWeek" },
       { property: "og:description", content: "Requests and answers from your family." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Notifications,

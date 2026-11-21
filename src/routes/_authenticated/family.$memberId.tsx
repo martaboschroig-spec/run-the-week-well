@@ -15,6 +15,8 @@ export const Route = createFileRoute("/_authenticated/family/$memberId")({
       { name: "description", content: "Everything one family member is taking care of." },
       { property: "og:title", content: "Responsibilities — RunTheWeek" },
       { property: "og:description", content: "One person's drop-offs and pickups." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: MemberView,

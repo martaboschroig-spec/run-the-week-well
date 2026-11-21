@@ -1,9 +1,11 @@
 import { StartButton } from "@/components/app/StartButton";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { TryDemoButton } from "@/components/app/TryDemoButton";
-import { CarFront, HandHelping, Backpack, CalendarCheck2, BellRing, Users, Check } from "lucide-react";
+import { lazy, Suspense, useState } from "react";
+import { CarFront, HandHelping, Backpack, CalendarCheck2, BellRing, Users, Check, Play, ArrowRight, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+
+const FamilyDemo = lazy(() => import("@/components/app/FamilyDemo"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,9 +38,14 @@ const STEPS = [
   { n: "3", title: "Relax — or ask for help", text: "Everyone sees the same plan. When life happens, hand a ride over in one tap." },
 ];
 
-function MockCard() {
+function MockCard({ playing, onPlay }: { playing: boolean; onPlay: () => void }) {
   return (
-    <div className="rounded-3xl border bg-card p-5 shadow-soft">
+    <div id="family-demo" className="min-h-[370px] scroll-mt-6 rounded-3xl border bg-card p-5 shadow-soft sm:p-6">
+      <div className="mb-4 flex items-center justify-between border-b pb-3">
+        <span className="font-extrabold">RunTheWeek</span>
+        <span className="text-xs font-semibold text-muted-foreground">Sample week</span>
+      </div>
+      {playing ? <Suspense fallback={<p className="py-12 text-center text-sm text-muted-foreground" role="status">Opening your sample week…</p>}><FamilyDemo /></Suspense> : <>
       <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Tuesday</p>
       <div className="mt-3 grid gap-3">
         <div className="rounded-2xl border p-4">
@@ -63,16 +70,23 @@ function MockCard() {
           </p>
         </div>
       </div>
+      <Button variant="outline" className="mt-4 w-full" onClick={onPlay}><Play className="h-4 w-4" />See a pickup swap</Button>
+      </>}
     </div>
   );
 }
 
 function LandingPage() {
   const { signedIn } = Route.useLoaderData();
+  const [playing, setPlaying] = useState(false);
+  function playDemo() {
+    setPlaying(true);
+    document.getElementById("family-demo")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "nearest" });
+  }
   return (
     <div className="mx-auto max-w-5xl px-6">
       {/* Nav */}
-      <header className="flex items-center gap-2 py-6">
+      <header className="flex flex-wrap items-center gap-2 py-6">
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
         <span className="text-lg font-extrabold">RunTheWeek</span>
         <nav className="ml-auto flex items-center gap-2">
@@ -82,7 +96,7 @@ function LandingPage() {
             <>
               <Button variant="ghost" asChild><Link to="/pricing">Pricing</Link></Button>
               <Button variant="ghost" asChild><Link to="/auth">Sign in</Link></Button>
-              <StartButton>Get started</StartButton>
+              <StartButton className="hidden sm:inline-flex">Start your trial</StartButton>
             </>
           )}
         </nav>
@@ -91,22 +105,30 @@ function LandingPage() {
       {/* Hero */}
       <section className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-2">
         <div>
-          <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-            Your family's week, covered.
+          <p className="mb-3 text-sm font-bold text-accent-foreground">RunTheWeek · the family activity planner</p>
+          <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl">
+            RunTheWeek
           </h1>
-          <p className="mt-4 max-w-md text-lg text-muted-foreground">
-            Soccer at 5, karate at 5:15, and someone has to bring the snacks. RunTheWeek turns your kids' activities into one calm plan the whole family can see.
-          </p>
+          <p className="mt-3 text-2xl font-bold">Who's picking up? Already sorted.</p>
+          <p className="mt-4 max-w-md text-lg text-muted-foreground">Every activity, every ride, every thing to bring. One shared week for the people who keep your family moving.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <StartButton size="lg">Start your family plan</StartButton>
-            <TryDemoButton />
+            {signedIn ? <Button size="lg" asChild><Link to="/schedule">Open my week <ArrowRight className="h-4 w-4" /></Link></Button> : <StartButton size="lg">Start your 7-day trial <ArrowRight className="h-4 w-4" /></StartButton>}
+            <Button variant="outline" size="lg" onClick={playDemo}><Play className="h-4 w-4" />Try a quick demo</Button>
           </div>
+          <p className="mt-3 text-sm text-muted-foreground">No password. Nothing to install.</p>
+          <Link to="/pricing" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">See the plan & pricing <ArrowRight className="h-3.5 w-3.5" /></Link>
         </div>
-        <MockCard />
+        <MockCard playing={playing} onPlay={playDemo} />
       </section>
 
+      <div className="flex flex-wrap gap-x-8 gap-y-3 border-y py-5 text-sm font-semibold">
+        <span className="flex items-center gap-2"><Users className="h-4 w-4 text-accent-foreground" />Parents, grandparents & carpools</span>
+        <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-accent-foreground" />Your family's plan stays private</span>
+        <span className="flex items-center gap-2"><Check className="h-4 w-4 text-covered" />Swaps only move when accepted</span>
+      </div>
+
       {/* Features */}
-      <section className="border-t py-14">
+      <section className="py-14">
         <h2 className="text-3xl font-extrabold tracking-tight">Less coordinating, more showing up</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           {FEATURES.map((f) => (
@@ -128,7 +150,7 @@ function LandingPage() {
         <h2 className="text-3xl font-extrabold tracking-tight">Up and running in minutes</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-3">
           {STEPS.map((s) => (
-            <div key={s.n} className="rounded-3xl border bg-card p-5 shadow-soft">
+            <div key={s.n} className="py-2">
               <span className="grid h-9 w-9 place-items-center rounded-full bg-primary font-extrabold text-primary-foreground">{s.n}</span>
               <p className="mt-3 font-bold">{s.title}</p>
               <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
@@ -137,14 +159,26 @@ function LandingPage() {
         </div>
       </section>
 
+      <section className="border-t py-12">
+        <h2 className="text-2xl font-extrabold">A few things you might be wondering</h2>
+        <div className="mt-5 divide-y">
+          {[
+            ["How is this different from a shared calendar?", "A calendar says when. RunTheWeek also says who: drop-off, pickup, what to pack, and which rides still need someone."],
+            ["Can Grandma help with pickups?", "Yes. Invite her with a family join link so she can see the plan and take responsibility for a ride."],
+            ["Does a swap change the plan straight away?", "No. The original person stays responsible until the person they're asking accepts."],
+            ["Do we need to download an app?", "No. RunTheWeek works in your browser, on your phone or computer."],
+          ].map(([question, answer]) => <details key={question} className="group py-4"><summary className="cursor-pointer font-bold focus-visible:outline-ring">{question}</summary><p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{answer}</p></details>)}
+        </div>
+      </section>
+
       {/* Final CTA */}
-      <section className="my-14 rounded-3xl bg-primary px-6 py-12 text-center text-primary-foreground">
+      <section className="my-8 border-y py-12 text-center">
         <CalendarCheck2 className="mx-auto h-8 w-8" />
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight">This week can be the calm one</h2>
-        <p className="mx-auto mt-2 max-w-md text-primary-foreground/80">
+        <p className="mx-auto mt-2 max-w-md text-muted-foreground">
           Set up your family's activities today and see exactly what's covered — and what still needs someone.
         </p>
-        <StartButton size="lg" variant="secondary" className="mt-6">Start your 7-day trial</StartButton>
+        {signedIn ? <Button size="lg" className="mt-6" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton size="lg" className="mt-6">Start your 7-day trial</StartButton>}
       </section>
 
       <footer className="flex items-center gap-2 border-t py-6 text-sm text-muted-foreground">

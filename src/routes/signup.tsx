@@ -6,6 +6,7 @@ import { SignupModal } from "@/components/app/SignupModal";
 import { TrialCheckout } from "@/components/app/TrialCheckout";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { PaymentTestModeBanner } from "@/components/app/PaymentTestModeBanner";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/signup")({
   validateSearch: (search: Record<string, unknown>): { email?: string | undefined; plan?: "family" | "plus" | undefined; step?: 2 | undefined } => ({
@@ -62,8 +63,9 @@ function SignUpPage() {
           <span className="grid h-9 w-9 shrink-0 rotate-[-6deg] place-items-center rounded-xl bg-primary text-primary-foreground">R</span>
           RunTheWeek
         </Link>
-        <Link to="/auth" className="text-sm font-semibold text-primary">I already have an account</Link>
+        {signedIn ? <span className="max-w-[50%] break-all text-right text-xs text-muted-foreground">{userEmail}</span> : <Link to="/auth" className="text-sm font-semibold text-primary">Sign in</Link>}
       </header>
+      <p className="mt-5 px-6 text-center text-xs font-semibold text-muted-foreground">{signedIn ? "Account ready" : "Create account"} <span aria-hidden="true">→</span> Payment <span aria-hidden="true">→</span> Your family's week</p>
       <h1 className="mt-10 px-6 text-center text-3xl font-extrabold tracking-tight sm:text-4xl">Start your family's week</h1>
       <div className="mx-auto mt-8 grid max-w-6xl items-start gap-8 px-6 pb-12 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-12">
         <div className="grid gap-5">
@@ -75,12 +77,9 @@ function SignUpPage() {
             {signedIn ? (
               <TrialCheckout />
             ) : (
-              <button type="button" onClick={() => setModal(true)} className="w-full rounded-2xl bg-muted p-4 text-center text-sm text-muted-foreground">
-                Create your account to see the payment form. <span className="font-semibold text-primary">Create account</span>
-              </button>
+              <Button type="button" variant="outline" onClick={() => setModal(true)} className="w-full">Continue with your account</Button>
             )}
           </section>
-          <Link to="/schedule" className="block text-center text-sm font-semibold text-primary">Skip for now and open my week</Link>
         </div>
         <aside className="grid gap-5 md:sticky md:top-6">
           <div className="rounded-3xl border-2 border-border bg-card p-5 shadow-soft sm:p-6">

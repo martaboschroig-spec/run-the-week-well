@@ -1,9 +1,9 @@
 // Landing CTA: opens the sign-up modal; once the account exists, goes to pricing + payment.
-import { useEffect, useState, type ComponentProps } from "react";
+import { lazy, Suspense, useEffect, useState, type ComponentProps } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { SignupModal } from "@/components/app/SignupModal";
+const SignupModal = lazy(() => import("@/components/app/SignupModal").then((module) => ({ default: module.SignupModal })));
 
 export function StartButton({ children, ...props }: ComponentProps<typeof Button>) {
   const [open, setOpen] = useState(false);
@@ -24,7 +24,7 @@ export function StartButton({ children, ...props }: ComponentProps<typeof Button
   return (
     <>
       <Button {...props} onClick={start}>{children}</Button>
-      <SignupModal open={open} onOpenChange={setOpen} returnTo="/signup" />
+      {open && <Suspense fallback={null}><SignupModal open={open} onOpenChange={setOpen} returnTo="/signup" /></Suspense>}
     </>
   );
 }

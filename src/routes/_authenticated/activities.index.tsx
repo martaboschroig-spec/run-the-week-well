@@ -12,6 +12,8 @@ export const Route = createFileRoute("/_authenticated/activities/")({
       { name: "description", content: "All your kids' activities in one place." },
       { property: "og:title", content: "Activities — RunTheWeek" },
       { property: "og:description", content: "All your kids' activities." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Activities,
