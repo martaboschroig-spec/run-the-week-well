@@ -52,7 +52,7 @@ function LandingPage() {
         <p className="mt-4 text-2xl font-bold sm:text-3xl">Less juggling. More family time.</p>
         <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">Keep your kids' activities, pickups and things to bring in one shared plan. Everyone knows what's happening — and who's helping.</p>
         <div className="mt-6 flex flex-col items-center gap-3">
-          {signedIn ? <Button size="lg" asChild><Link to="/schedule">Open my week<ArrowRight className="h-4 w-4" /></Link></Button> : <StartButton size="lg">Start your 7-day trial<ArrowRight className="h-4 w-4" /></StartButton>}
+          {signedIn ? <Button size="lg" variant="cta" asChild><Link to="/schedule">Open my week<ArrowRight className="h-4 w-4" /></Link></Button> : <StartButton size="lg">Start your 7-day trial<ArrowRight className="h-4 w-4" /></StartButton>}
           <Button variant="ghost" onClick={() => setDemoOpen(true)}><Play className="h-4 w-4" />See how it works</Button>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">Works on your phone. Nothing to download.</p>
@@ -102,7 +102,7 @@ function LandingPage() {
 
       <section className="border-t py-10 text-center">
         <h2 className="text-2xl font-extrabold">Make room for an easier week.</h2>
-        {signedIn ? <Button className="mt-5" size="lg" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton className="mt-5" size="lg">Start your 7-day trial<ArrowRight className="h-4 w-4" /></StartButton>}
+        {signedIn ? <Button className="mt-5" size="lg" variant="cta" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton className="mt-5" size="lg">Start your 7-day trial<ArrowRight className="h-4 w-4" /></StartButton>}
         <p className="mt-3 text-sm"><Link to="/pricing" className="font-semibold text-primary">See plan & pricing</Link></p>
       </section>
       <footer className="flex flex-wrap justify-between gap-3 border-t py-5 text-xs text-muted-foreground"><span>RunTheWeek · made for busy families</span><Link to={signedIn ? "/schedule" : "/auth"}>{signedIn ? "Open my week" : "Already a member? Sign in"}</Link></footer>
