@@ -10,7 +10,7 @@
 - [x] Give the sign-in Home much more visual body (brand pitch + sign-in card)
 - [x] Marketing landing at / to acquire users (hero, features, how it works, CTA → /signup)
 - [x] Signup page works for new families too (account → onboarding creates household)
-- [ ] Subscriptions/payments (Stripe or Paddle) — pending, needs user's decision
+- [x] Subscriptions/payments: Stripe chosen and wired (test mode)
 - [x] Show the user the app part (Schedule, My Tasks, Family, Notifications) after the landing is done
 - [x] Alert plumbing: channels + preferences in the database, dispatcher, phone-alert registration, Settings UI
 - [ ] Phone alerts (push): needs the alerts service (Firebase) connected
@@ -20,7 +20,7 @@
 - [x] Pricing page at /pricing, linked from the landing
 - [x] Sign-up shows plan picker + account together
 - [x] Sign-up in 2 steps: account, then payment (visual)
-- [ ] Billing: embedded payment form on sign-up (needs payments enabled — waiting for user OK)
+- [x] Billing: embedded payment form on sign-up
 - [x] No email verification on sign-up: confirm emails off, signup goes straight into the app
 - [x] Passwordless access: magic link by email + Sign in with Google and Apple
 - [x] Sign-up page: account, plan and payment as 3 steps on one page (no pop-up), summary on the right
@@ -31,4 +31,4 @@
 - [x] Stripe checkout: $1.95 for 7 days, then $9.99 every 4 weeks (test mode)
 - [ ] Live payments: user must claim the payment account in the Payments tab
 - [x] Payment page layout: balance the two columns (left card leaves a big empty gap), stop the phone preview being cut off, drop the duplicated price
-- [ ] Payment page: go back to the original proposal (the reference structure) — the user rejected the rebalanced version
+- [x] Payment page: back to the original proposal (reference structure restored)
