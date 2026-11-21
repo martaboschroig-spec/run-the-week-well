@@ -32,3 +32,4 @@
 - [ ] Live payments: user must claim the payment account in the Payments tab
 - [x] Payment page layout: balance the two columns (left card leaves a big empty gap), stop the phone preview being cut off, drop the duplicated price
 - [x] Payment page: back to the original proposal (reference structure restored)
+- [x] Main CTA in green (leaf green), applied to every trial / open-my-week button
