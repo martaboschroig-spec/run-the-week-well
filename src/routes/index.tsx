@@ -101,7 +101,6 @@ function LandingPage() {
             <StartButton size="lg">Start your family plan</StartButton>
             <TryDemoButton />
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">$1.95 for your first 7 days. Made for parents, grandparents and carpools.</p>
         </div>
         <MockCard />
       </section>

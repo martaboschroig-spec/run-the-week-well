@@ -65,7 +65,7 @@ function PricingPage() {
       <section className="relative py-10 text-center sm:py-14">
         <span aria-hidden className="absolute left-4 top-6 h-16 w-16 rounded-full bg-sun-soft sm:left-16" />
         <span aria-hidden className="absolute right-6 top-20 h-10 w-10 rotate-12 rounded-2xl bg-accent sm:right-20" />
-        <span className="relative inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold">Try Family for 7 days — $1.95</span>
+        <span className="relative inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold">Try Family for 7 days</span>
         <h1 className="relative mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl">Pricing that covers <span className="text-primary">the whole family</span></h1>
         <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
           One plan per household, not per person. Try Family for 7 days, then pick what fits.
@@ -140,10 +140,10 @@ function PricingPage() {
       <section className="my-6 rounded-[2.5rem] bg-secondary px-6 py-14 text-center text-secondary-foreground">
         <h2 className="text-3xl font-extrabold tracking-tight">Try it on this week</h2>
         <p className="mx-auto mt-2 max-w-md text-secondary-foreground/90">
-          Add Tuesday's activities and see who's covering what — 7 days for $1.95.
+          Add Tuesday's activities and see who's covering what.
         </p>
         <Button size="lg" className="mt-6 rounded-full font-bold" asChild>
-          <Link to="/signup">{signedIn ? "Open my week" : "Start for $1.95"}</Link>
+          <Link to="/signup">{signedIn ? "Open my week" : "Start your trial"}</Link>
         </Button>
       </section>
 
