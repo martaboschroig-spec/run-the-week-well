@@ -48,26 +48,21 @@ function PricingPage() {
   return (
     <div className="theme-playful min-h-screen">
     <div className="mx-auto max-w-5xl px-6">
-      <header className="flex items-center gap-2 py-6">
-        <span className="grid h-9 w-9 shrink-0 place-items-center rotate-[-6deg] rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
-        <span className="text-lg font-extrabold">RunTheWeek</span>
+      <header className="flex flex-wrap items-center gap-2 py-5">
+        <Link to="/" className="flex items-center gap-2 font-extrabold sm:text-lg"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">R</span>RunTheWeek</Link>
         <nav className="ml-auto flex items-center gap-2">
           {signedIn ? (
             <Button asChild><Link to="/schedule">Open my week</Link></Button>
           ) : (
             <>
               <Button variant="ghost" asChild><Link to="/auth">Sign in</Link></Button>
-              <StartButton>Start your trial</StartButton>
             </>
           )}
         </nav>
       </header>
 
-      <section className="relative py-10 text-center sm:py-14">
-        <span aria-hidden className="absolute left-4 top-6 h-16 w-16 rounded-full bg-sun-soft sm:left-16" />
-        <span aria-hidden className="absolute right-6 top-20 h-10 w-10 rotate-12 rounded-2xl bg-accent sm:right-20" />
-        <span className="relative inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold">Try Family for 7 days</span>
-        <h1 className="relative mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl">Pricing that covers <span className="text-primary">the whole family</span></h1>
+      <section className="py-8 text-center sm:py-10">
+        <h1 className="text-3xl font-extrabold sm:text-4xl">One plan for your family</h1>
         <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
           One plan per household, not per person. Your activities, rides and packing lists — together.
         </p>
@@ -120,7 +115,7 @@ function PricingPage() {
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-accent"><HeartHandshake className="h-5 w-5 text-accent-foreground" /></span>
             <div>
               <p className="font-bold">Stop when you want</p>
-              <p className="mt-1 text-sm text-muted-foreground">Cancel from Settings. Your week stays readable either way.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Your plan renews automatically until you cancel.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">

@@ -105,7 +105,7 @@ function LandingPage() {
         {signedIn ? <Button className="mt-5" size="lg" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton className="mt-5" size="lg">Start your 7-day trial<ArrowRight className="h-4 w-4" /></StartButton>}
         <p className="mt-3 text-sm"><Link to="/pricing" className="font-semibold text-primary">See plan & pricing</Link></p>
       </section>
-      <footer className="flex flex-wrap justify-between gap-3 border-t py-5 text-xs text-muted-foreground"><span>RunTheWeek · made for busy families</span><Link to="/auth">{signedIn ? "Switch account" : "Already a member? Sign in"}</Link></footer>
+      <footer className="flex flex-wrap justify-between gap-3 border-t py-5 text-xs text-muted-foreground"><span>RunTheWeek · made for busy families</span><Link to={signedIn ? "/schedule" : "/auth"}>{signedIn ? "Open my week" : "Already a member? Sign in"}</Link></footer>
 
       <Dialog open={demoOpen} onOpenChange={setDemoOpen}>
         <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-2xl sm:max-w-md">

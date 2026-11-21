@@ -1,5 +1,5 @@
 // Passwordless access: the only way in is a one-time sign-in link sent by email.
-import { useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ type Props = {
 };
 
 export function MagicLinkAuth({ email = "", hint, returnTo = "" }: Props) {
+  const inputId = useId();
   const [value, setValue] = useState(email);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
@@ -36,16 +37,14 @@ export function MagicLinkAuth({ email = "", hint, returnTo = "" }: Props) {
 
   return (
     <div className="grid gap-3">
-      {sent ? (
-        <p className="rounded-2xl bg-covered-soft p-4 font-medium">{sent}</p>
-      ) : (
+      {sent && <p role="status" className="rounded-2xl bg-covered-soft p-4 font-medium">{sent}</p>}
         <form onSubmit={sendLink} className="grid gap-3">
-          <Input type="email" required placeholder="Email" autoComplete="email" className="h-12 rounded-xl text-base" value={value} onChange={(e) => setValue(e.target.value)} />
+          <label htmlFor={inputId} className="text-sm font-semibold">Email address</label>
+          <Input id={inputId} type="email" required placeholder="you@example.com" autoComplete="email" className="h-12 rounded-xl text-base" value={value} onChange={(e) => { setValue(e.target.value); setSent(null); }} />
           <Button size="lg" type="submit" disabled={busy}>
-            {busy ? "Sending…" : "Email me a sign-in link"}
+            {busy ? "Sending…" : sent ? "Resend sign-in link" : "Email me a sign-in link"}
           </Button>
         </form>
-      )}
       {hint && <p className="text-sm text-muted-foreground">{hint}</p>}
       <p className="text-xs leading-relaxed text-muted-foreground">No passwords to remember. The link works once, on the device that asked for it.</p>
     </div>

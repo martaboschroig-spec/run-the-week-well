@@ -36,7 +36,7 @@ export function SignupModal({ open, onOpenChange, email, returnTo }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-3xl sm:max-w-md">
+      <DialogContent className="max-h-[90dvh] overflow-y-auto rounded-3xl sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-extrabold tracking-tight">Create your account</DialogTitle>
           <DialogDescription>One tap, no passwords. Next: pay and start your 7-day trial.</DialogDescription>

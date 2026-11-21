@@ -1,4 +1,6 @@
 # Roadmap
+- [x] Explain which parts of the embedded Stripe payment form can be customized
+- [x] Usability sweep: pricing navigation, sign-in, email recovery, checkout recovery and first family setup
 - [x] Simplify the Home and replace role-switching demo with a short guided walkthrough
 - [x] CRO: lightweight on-page demo, consistent trial CTAs, clearer pricing and fewer checkout distractions
 - [x] Database + business rules (requests, accept/decline/cancel, conflicts)
