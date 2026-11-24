@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, Users, HeartHandshake, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { StartButton } from "@/components/app/StartButton";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -38,7 +37,7 @@ const PLANS = [
       "Notes and documents per activity",
       "Alerts by email and push",
     ],
-    cta: "Start your 7-day trial",
+    cta: "Choose Family",
     highlight: true,
   },
 ];
@@ -48,23 +47,28 @@ function PricingPage() {
   return (
     <div className="theme-playful min-h-screen">
     <div className="mx-auto max-w-5xl px-6">
-      <header className="flex flex-wrap items-center gap-2 py-5">
-        <Link to="/" className="flex items-center gap-2 font-extrabold sm:text-lg"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">R</span>RunTheWeek</Link>
+      <header className="flex items-center gap-2 py-6">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rotate-[-6deg] rounded-xl bg-primary text-primary-foreground font-extrabold">R</span>
+        <span className="text-lg font-extrabold">RunTheWeek</span>
         <nav className="ml-auto flex items-center gap-2">
           {signedIn ? (
             <Button asChild><Link to="/schedule">Open my week</Link></Button>
           ) : (
             <>
               <Button variant="ghost" asChild><Link to="/auth">Sign in</Link></Button>
+              <Button asChild><Link to="/signup">Get started</Link></Button>
             </>
           )}
         </nav>
       </header>
 
-      <section className="py-8 text-center sm:py-10">
-        <h1 className="text-3xl font-extrabold sm:text-4xl">One plan for your family</h1>
+      <section className="relative py-10 text-center sm:py-14">
+        <span aria-hidden className="absolute left-4 top-6 h-16 w-16 rounded-full bg-sun-soft sm:left-16" />
+        <span aria-hidden className="absolute right-6 top-20 h-10 w-10 rotate-12 rounded-2xl bg-accent sm:right-20" />
+        <span className="relative inline-block rounded-full bg-sun px-4 py-1 text-sm font-bold">Try Family for 7 days — $1.95</span>
+        <h1 className="relative mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl">Pricing that covers <span className="text-primary">the whole family</span></h1>
         <p className="mx-auto mt-4 max-w-lg text-lg text-muted-foreground">
-          One plan per household, not per person. Your activities, rides and packing lists — together.
+          One plan per household, not per person. Try Family for 7 days, then pick what fits.
         </p>
       </section>
 
@@ -78,6 +82,11 @@ function PricingPage() {
                 : "flex flex-col rounded-[2rem] border-2 border-border bg-card p-7 shadow-soft"
             }
           >
+            {p.highlight && (
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 -rotate-2 whitespace-nowrap rounded-full bg-sun px-4 py-1 text-xs font-extrabold text-foreground ">
+                Most families pick this
+              </span>
+            )}
             <p className="text-sm font-bold uppercase tracking-wide text-muted-foreground">{p.name}</p>
             <p className={"mt-3 text-5xl font-extrabold tracking-tight " + (p.highlight ? "text-primary" : "")}>{p.price}</p>
             <p className="text-sm text-muted-foreground">{p.per}</p>
@@ -90,14 +99,14 @@ function PricingPage() {
                 </li>
               ))}
             </ul>
-            <StartButton
+            <Button
               size="lg"
               className="mt-6 w-full rounded-full font-bold"
               variant={p.highlight ? "default" : "outline"}
+              asChild
             >
-              {p.cta}
-            </StartButton>
-            <p className="mt-3 text-center text-xs text-muted-foreground">Taxes included. Renews automatically. Cancel any time.</p>
+              <Link to="/signup" search={{ plan: p.id === "plus" ? "plus" : "family" }}>{p.cta}</Link>
+            </Button>
           </div>
         ))}
       </section>
@@ -115,7 +124,7 @@ function PricingPage() {
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-accent"><HeartHandshake className="h-5 w-5 text-accent-foreground" /></span>
             <div>
               <p className="font-bold">Stop when you want</p>
-              <p className="mt-1 text-sm text-muted-foreground">Your plan renews automatically until you cancel.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Cancel from Settings. Your week stays readable either way.</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
@@ -131,15 +140,17 @@ function PricingPage() {
       <section className="my-6 rounded-[2.5rem] bg-secondary px-6 py-14 text-center text-secondary-foreground">
         <h2 className="text-3xl font-extrabold tracking-tight">Try it on this week</h2>
         <p className="mx-auto mt-2 max-w-md text-secondary-foreground/90">
-          Add Tuesday's activities and see who's covering what.
+          Add Tuesday's activities and see who's covering what — 7 days for $1.95.
         </p>
-        {signedIn ? <Button size="lg" className="mt-6" asChild><Link to="/schedule">Open my week</Link></Button> : <StartButton size="lg" className="mt-6">Start your 7-day trial</StartButton>}
+        <Button size="lg" className="mt-6 rounded-full font-bold" asChild>
+          <Link to="/signup">{signedIn ? "Open my week" : "Start for $1.95"}</Link>
+        </Button>
       </section>
 
       <footer className="flex flex-wrap items-center gap-2 border-t py-6 text-sm text-muted-foreground">
         <Users className="h-4 w-4" />
         RunTheWeek — made for busy families.
-        <Link to="/" className="ml-auto font-semibold text-primary">Back to RunTheWeek</Link>
+        <span className="ml-auto">Billing opens soon. Everything is free to use until then.</span>
       </footer>
     </div>
     </div>

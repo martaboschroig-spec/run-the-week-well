@@ -17,8 +17,6 @@ export const Route = createFileRoute("/_authenticated/schedule")({
       { name: "description", content: "Your family's day, week and month at a glance." },
       { property: "og:title", content: "Schedule — RunTheWeek" },
       { property: "og:description", content: "Your family's week at a glance." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Schedule,

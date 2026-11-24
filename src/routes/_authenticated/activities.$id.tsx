@@ -11,8 +11,6 @@ export const Route = createFileRoute("/_authenticated/activities/$id")({
       { name: "description", content: "Change times, place, who drives and what to bring." },
       { property: "og:title", content: "Edit activity — RunTheWeek" },
       { property: "og:description", content: "Edit an activity." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: EditActivity,

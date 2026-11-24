@@ -23,9 +23,9 @@ function ReturnPage() {
     <div className="grid min-h-screen place-items-center px-6">
       <div className="max-w-md rounded-3xl border-2 border-border bg-card p-8 text-center shadow-soft">
         <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-secondary text-secondary-foreground"><Check className="h-7 w-7" strokeWidth={3} /></span>
-        <h1 className="mt-4 text-2xl font-extrabold">{session_id ? "You're back from checkout" : "Nothing to show here"}</h1>
-        <p className="mt-2 text-sm text-muted-foreground">{session_id ? "If your payment went through, Stripe will email your confirmation. You can open your week below." : "Head back to start your trial."}</p>
-        <Button asChild className="mt-6 w-full"><Link to={session_id ? "/schedule" : "/signup"}>{session_id ? "Open my week" : "Back to checkout"}</Link></Button>
+        <h1 className="mt-4 text-2xl font-extrabold">{session_id ? "Your trial has started" : "Nothing to show here"}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{session_id ? "7 days of full access. After that, $9.99 every 4 weeks until you cancel." : "Head back to start your trial."}</p>
+        <Button asChild className="mt-6 w-full"><Link to="/schedule">Open my week</Link></Button>
       </div>
     </div>
   );

@@ -26,8 +26,6 @@ export const Route = createFileRoute("/_authenticated/settings")({
       { name: "description", content: "Your family name, your profile, how we reach you and sign out." },
       { property: "og:title", content: "Settings — RunTheWeek" },
       { property: "og:description", content: "Your RunTheWeek settings." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Settings,

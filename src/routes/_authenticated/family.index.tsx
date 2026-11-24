@@ -19,8 +19,6 @@ export const Route = createFileRoute("/_authenticated/family/")({
       { name: "description", content: "The grown-ups and kids in your family." },
       { property: "og:title", content: "Family — RunTheWeek" },
       { property: "og:description", content: "Your family members." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Family,

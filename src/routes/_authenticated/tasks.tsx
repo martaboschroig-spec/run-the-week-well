@@ -14,8 +14,6 @@ export const Route = createFileRoute("/_authenticated/tasks")({
       { name: "description", content: "What you need to do: your drop-offs and pickups." },
       { property: "og:title", content: "My Tasks — RunTheWeek" },
       { property: "og:description", content: "Your drop-offs and pickups." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Tasks,

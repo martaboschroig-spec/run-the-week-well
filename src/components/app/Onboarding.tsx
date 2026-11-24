@@ -23,14 +23,14 @@ export function Onboarding() {
     <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-10">
       <h1 className="text-3xl font-extrabold tracking-tight">Let's set up your family</h1>
       <p className="mt-2 text-muted-foreground">We'll start you with an example family — Sarah, Michael, Grandma, Emma, Leo and Sophie. You can rename or remove anyone later.</p>
-      <label htmlFor="family-name" className="mt-8 text-sm font-semibold">Family name</label>
-      <Input id="family-name" className="mt-2 h-12 rounded-xl text-base" value={name} onChange={(e) => setName(e.target.value)} />
-      <p className="mt-6 text-sm font-semibold">Choose your starting profile</p>
+      <label className="mt-8 text-sm font-semibold">Family name</label>
+      <Input className="mt-2 h-12 rounded-xl text-base" value={name} onChange={(e) => setName(e.target.value)} />
+      <p className="mt-6 text-sm font-semibold">Which one are you?</p>
       <div className="mt-2 grid gap-2">
         {PEOPLE.map((p) => (
-          <Button key={p.id} variant="outline" aria-pressed={me === p.id} onClick={() => setMe(p.id)} className={cn("flex h-14 items-center justify-between rounded-2xl border bg-card px-4 text-left", me === p.id && "border-primary ring-2 ring-primary/30")}>
+          <button key={p.id} onClick={() => setMe(p.id)} className={cn("flex h-14 items-center justify-between rounded-2xl border bg-card px-4 text-left", me === p.id && "border-primary ring-2 ring-primary/30")}>
             <span className="font-semibold">{p.label}</span><span className="text-muted-foreground">{p.role}</span>
-          </Button>
+          </button>
         ))}
       </div>
       <Button size="lg" className="mt-8" disabled={busy} onClick={async () => {

@@ -10,8 +10,6 @@ export const Route = createFileRoute("/_authenticated/activities/new")({
       { name: "description", content: "Add a new activity with drop-off, pickup and what to bring." },
       { property: "og:title", content: "Add activity — RunTheWeek" },
       { property: "og:description", content: "Add a new activity." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: NewActivity,
