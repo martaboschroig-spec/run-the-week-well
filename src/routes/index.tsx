@@ -98,7 +98,7 @@ function LandingPage() {
             Soccer at 5, karate at 5:15, and someone has to bring the snacks. RunTheWeek turns your kids' activities into one calm plan the whole family can see.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <StartButton size="lg">Start your family plan</StartButton>
+            <StartButton size="lg" className="bg-hot-red text-hot-red-foreground hover:bg-hot-red/90">Start your family plan</StartButton>
             <TryDemoButton />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">$1.95 for your first 7 days. Made for parents, grandparents and carpools.</p>

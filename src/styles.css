@@ -118,6 +118,8 @@
   --waiting-soft: oklch(0.965 0.04 85);
   --attention: oklch(0.6 0.12 28);
   --attention-soft: oklch(0.96 0.025 28);
+  --hot-red: oklch(0.62 0.235 26);
+  --hot-red-foreground: oklch(0.99 0.004 80);
   --kid-lavender: oklch(0.93 0.035 300);
   --kid-lavender-ink: oklch(0.45 0.08 300);
   --kid-blue: oklch(0.93 0.035 240);
@@ -185,10 +187,14 @@
   --ring: oklch(0.71 0.17 38);
   --sun: oklch(0.88 0.13 90);
   --sun-soft: oklch(0.96 0.06 90);
+  --hot-red: oklch(0.62 0.235 26);
+  --hot-red-foreground: oklch(0.99 0.004 80);
   background: var(--background);
   color: var(--foreground);
 }
 @theme inline {
   --color-sun: var(--sun);
   --color-sun-soft: var(--sun-soft);
+  --color-hot-red: var(--hot-red);
+  --color-hot-red-foreground: var(--hot-red-foreground);
 }
